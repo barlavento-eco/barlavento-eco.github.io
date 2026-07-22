@@ -1,3 +1,7 @@
+---
+title: Contributing
+---
+
 # Contributing
 
 This is a community commons. Contributing to it should not require being a

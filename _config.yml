@@ -1,0 +1,23 @@
+# Minimal Jekyll config for GitHub Pages. Zero build tooling by design:
+# GitHub builds this natively, so contributors never install anything.
+#
+# NOTE: the theme below is a neutral stock placeholder. Visual and brand
+# direction is the design lead's call and has not been made — do not treat
+# this as a design decision.
+
+title: barlavento.eco
+description: A web commons for the Ecosystem Restoration Community of Barlavento, Algarve
+theme: jekyll-theme-primer
+
+# Renders relative markdown links (e.g. [Projects](projects.md)) correctly
+# on the published site as well as in the GitHub repo view.
+plugins:
+  - jekyll-relative-links
+
+relative_links:
+  enabled: true
+  collections: false
+
+exclude:
+  - README-notes/
+  - .gitignore

@@ -1,0 +1,59 @@
+# The River — sources
+#
+# This is the whole list. One entry per member project whose news flows into
+# the River. Adding a project means adding four lines here; removing one means
+# deleting them. No other file needs to change.
+#
+# THE RULE: a project appears here ONLY after the project has said yes.
+# Publishing is consent, and consent is per-project. Do not add a feed because
+# you found one and it works — that is exactly the thing this project exists
+# not to do. If in doubt, ask first and leave the entry out.
+#
+# To add a project:
+#   - name:  How the project should be named in public
+#     site:  Their homepage, for the "via" link
+#     feed:  The feed address they confirmed
+#     since: The date they agreed (YYYY-MM-DD), so consent is auditable
+#
+# To pause a project without losing the record, comment its lines out and add
+# a note saying why and when.
+
+sources:
+  - name: Quinta Vale da Lama
+    site: https://www.valedalama.net/
+    feed: https://www.valedalama.net/feed/
+    since: 2026-07-22
+    note: Our own project. The pathfinder node — already runs rssCloud push.
+
+  - name: Mud Valley Foundation
+    site: https://mudvalley.org/
+    feed: https://mudvalley.org/feed/
+    since: 2026-07-22
+    note: Facilitating organisation. Ours.
+
+  - name: waltzweb
+    site: https://waltzweb.wordpress.com/
+    feed: https://waltzweb.wordpress.com/feed/
+    since: 2026-07-22
+    note: Walt's personal blog. Founding feed, per the roadmap.
+
+# ---------------------------------------------------------------------------
+# ASKED, NOT YET AGREED — do not uncomment until they have said yes.
+#
+# Feeds confirmed working 2026-07-22, but no one has been asked.
+# See 00 - Inbox/barlavento-profile-and-river-asks.md (in Walt's vault).
+#
+#  - name: African Peace Village
+#    site: https://africanway.world/
+#    feed: https://africanway.world/feed/
+#
+#  - name: Quinta do Jasmim
+#    site: https://www.mamaseednaturals.com/
+#    feed: https://www.mamaseednaturals.com/blog-feed.xml
+#
+# NO FEED YET (Wix site with no Blog section — needs one click from them):
+#   Vinha Velha · Lagos Mais Verde
+#
+# UNKNOWN (site blocks automated checks — needs a human to look):
+#   Restore Nature Foundation
+# ---------------------------------------------------------------------------

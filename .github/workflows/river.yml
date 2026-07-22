@@ -1,0 +1,46 @@
+name: Build the River
+
+# Polls the member feeds listed in sources.yml and rewrites docs/river.md.
+#
+# Hourly rather than every few minutes: it is courteous to the members' servers,
+# it keeps well inside the free Actions allowance, and news in a land-steward
+# community is not a live ticker. When members' sites support rssCloud push we
+# can do better than polling — see docs/wordpress-spec.md.
+
+on:
+  schedule:
+    - cron: "17 * * * *"   # hourly, off the hour to avoid the crowded :00 slot
+  workflow_dispatch:        # lets a human run it on demand from the Actions tab
+  push:
+    branches: [main]
+    paths:
+      - "sources.yml"       # a newly agreed member appears without waiting an hour
+      - "scripts/build-river.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: river
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the river page
+        run: python3 scripts/build-river.py
+
+      - name: Commit if it changed
+        run: |
+          if [ -z "$(git status --porcelain docs/river.md)" ]; then
+            echo "No change — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "barlavento.eco river"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/river.md
+          git commit -m "River: refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push

@@ -22,7 +22,9 @@ permissions:
 
 concurrency:
   group: river
-  cancel-in-progress: false
+  # A superseded river build is harmless — the next run regenerates the whole
+  # page from scratch, so there is nothing to lose by cancelling an older one.
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -35,12 +37,28 @@ jobs:
 
       - name: Commit if it changed
         run: |
-          if [ -z "$(git status --porcelain docs/river.md)" ]; then
-            echo "No change — nothing to commit."
-            exit 0
-          fi
           git config user.name  "barlavento.eco river"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/river.md
-          git commit -m "River: refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git push
+
+          # docs/river.md is generated, never hand-edited, so on a push race the
+          # correct resolution is always "take theirs, then rebuild" — no merge,
+          # no conflict. Two runs can overlap when sources.yml is edited near the
+          # top of the hour, which is exactly when a new member is added.
+          for attempt in 1 2 3; do
+            if [ -z "$(git status --porcelain docs/river.md)" ]; then
+              echo "No change — nothing to commit."
+              exit 0
+            fi
+            git add docs/river.md
+            git commit -q -m "River: refresh $(date -u '+%Y-%m-%d %H:%M UTC')"
+            if git push -q; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected (attempt $attempt) — another run got there first. Rebuilding."
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            python3 scripts/build-river.py
+          done
+          echo "::error::Could not push after 3 attempts."
+          exit 1

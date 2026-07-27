@@ -8,7 +8,7 @@ The latest from every project in the community. Each item links home to the site
 
 Want your project's news here? See [Join the River](join-the-river.md). It takes one web address.
 
-*Updated 2026-07-27 00:12 UTC. Reading 3 sources.*
+*Updated 2026-07-27 04:03 UTC. Reading 3 sources.*
 
 ---
 

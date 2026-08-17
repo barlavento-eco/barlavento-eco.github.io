@@ -10,6 +10,14 @@ Want your project's news here? See [Join the River](join-the-river.md). It takes
 
 *Updated 2026-07-28 09:48 UTC. Reading 3 sources.*
 
+> **This page is a snapshot, not the live river.** While the River is still
+> being built and debugged, the hourly build publishes to the
+> [`river` branch](https://github.com/barlavento-eco/barlavento-eco.github.io/blob/river/docs/river.md)
+> instead of to `main`, so that a robot's hourly output does not bury the
+> human decisions in this repository's history. The page you are reading is
+> frozen at the date above. When there is member news of substance flowing,
+> we will decide how the live version reaches this site.
+
 ---
 
 ## 21 July 2026

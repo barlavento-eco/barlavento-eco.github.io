@@ -1,0 +1,104 @@
+/*
+ * Map figures.
+ *
+ * Three-tier measure: body text holds the ~40rem reading column, map figures
+ * step out to the theme's wide size, and full-bleed is reserved for the single
+ * landscape photograph the design brief allows. Full-bleed is a scarce
+ * resource — it is not spent on every embed.
+ */
+
+.ercb-map {
+	margin-block: clamp(2rem, 5vw, 3.5rem);
+}
+
+.ercb-map figure {
+	margin: 0;
+}
+
+.ercb-map .ercb-frame {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 3 / 4;
+	overflow: hidden;
+	border: 1px solid var(--wp--preset--color--stone);
+	background: var(--wp--preset--color--stone);
+}
+
+.ercb-map .ercb-frame iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	display: block;
+}
+
+.ercb-map figcaption {
+	margin-top: 0.75rem;
+	max-width: 40rem;
+	font-size: var(--wp--preset--font-size--small);
+	line-height: 1.5;
+	color: var(--wp--preset--color--muted);
+}
+
+.ercb-map figcaption a {
+	color: inherit;
+}
+
+@media (min-width: 700px) {
+	.ercb-map .ercb-frame { aspect-ratio: 16 / 10; }
+}
+
+@media (min-width: 1100px) {
+	.ercb-map .ercb-frame { aspect-ratio: 16 / 9; }
+}
+
+/* --- Full-screen control ------------------------------------------------- */
+
+.ercb-fullscreen-btn {
+	position: absolute;
+	right: 0.85rem;
+	/* Top, not bottom. In the sticky layout the frame is min(90vh, 800px) tall
+	   and starts ~370px down the page, so a bottom-anchored control sits below
+	   the fold on a laptop viewport until you scroll far enough to pin the map
+	   — invisible exactly when the reader is deciding whether to engage. */
+	top: 0.85rem;
+	z-index: 6;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.55rem 0.95rem;
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 0.85rem;
+	font-weight: 600;
+	line-height: 1;
+	color: var(--wp--preset--color--paper);
+	background: var(--wp--preset--color--atlantic, #27596f);
+	border: 1px solid rgba(30, 26, 21, 0.15);
+	border-radius: 999px;
+	box-shadow: 0 3px 12px rgba(30, 26, 21, 0.22);
+	cursor: pointer;
+	/* Always visible — the map is a thumbnail until you open this, and a
+	   hover-only control is invisible to anyone who does not already know
+	   it is there. Discoverability is the whole point. */
+	opacity: 0.96;
+	transition: transform 0.12s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ercb-frame:hover .ercb-fullscreen-btn,
+.ercb-fullscreen-btn:hover,
+.ercb-fullscreen-btn:focus-visible {
+	opacity: 1;
+	transform: translateY(-1px);
+	box-shadow: 0 5px 16px rgba(30, 26, 21, 0.28);
+}
+
+.ercb-frame:fullscreen {
+	aspect-ratio: auto;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	border-radius: 0;
+}
+
+.ercb-frame:fullscreen .ercb-fullscreen-btn { opacity: 1; }

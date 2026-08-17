@@ -21,3 +21,7 @@ relative_links:
 exclude:
   - README-notes/
   - .gitignore
+  # The WordPress lane. This is source code for a site rendered elsewhere, not
+  # pages for this one — Jekyll would otherwise copy the PHP and CSS into the
+  # published output, where it is noise at best and confusing at worst.
+  - site/

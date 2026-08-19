@@ -1,0 +1,85 @@
+/*
+ * Landing page (front-page.php).
+ * Territory palette + typographic identity, consistent with theme.json.
+ * Scoped under .bl-home so it never leaks into the map pages or wp-admin.
+ */
+/* Front page: hide the "Home" page title (loaded only on the front page). */
+body.home .wp-block-post-title{display:none}
+
+.bl-home{--h-cork:#8A5A3B;--h-cistus:#B46374;--h-atlantic:#27596F;--h-stone:#E2DACB;
+  --h-stone2:#D5CAB5;--h-paper2:#F0EADC;--h-muted:#6B6255;--h-dim:#8C8375;
+  color:var(--wp--preset--color--ink,#1E1A15);
+  /* Break out of the theme's constrained content column to full width;
+     the inner .wrap re-imposes a comfortable 74rem measure. Transform-centering
+     is robust regardless of the parent's own width/position. */
+  width:100vw;max-width:100vw;position:relative;left:50%;transform:translateX(-50%);
+  overflow-x:hidden;}
+.bl-home *{box-sizing:border-box}
+.bl-home .wrap{max-width:74rem;margin:0 auto;padding:0 2rem}
+
+/* Hero */
+.bl-home .hero{padding:3.5rem 0 2.5rem}
+.bl-home .eyebrow{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--h-cork);margin-bottom:1.3rem}
+.bl-home .hero h1{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-weight:400;font-size:clamp(1.7rem,3.3vw,2.85rem);line-height:1.28;max-width:30ch;letter-spacing:-.01em;margin:0}
+.bl-home .hero h1 em{font-style:italic;color:var(--h-atlantic)}
+.bl-home .hero .sig{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.8rem;color:var(--h-dim);margin-top:1.5rem}
+
+/* Section head */
+.bl-home .sec{padding:2.2rem 0}
+.bl-home .sec-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.4rem;border-top:1px solid var(--h-stone);padding-top:1.5rem}
+.bl-home .sec-head h2{font-family:var(--wp--preset--font-family--display,sans-serif);font-weight:600;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--h-muted);white-space:nowrap}
+.bl-home .sec-head p{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-size:1rem;color:var(--h-muted);flex:1;margin:0}
+
+/* Map cards */
+.bl-home .maps{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+.bl-home .mapcard{display:block;text-decoration:none;color:inherit;border:1px solid var(--h-stone);border-radius:14px;overflow:hidden;background:#fff;transition:border-color .15s,transform .15s,box-shadow .15s}
+.bl-home .mapcard:hover{border-color:var(--h-atlantic);transform:translateY(-2px);box-shadow:0 10px 30px rgba(30,26,21,.08)}
+.bl-home .mapcard img{display:block;width:100%;height:auto;border-bottom:1px solid var(--h-stone)}
+.bl-home .mapcard .body{padding:1.1rem 1.25rem 1.35rem}
+.bl-home .mapcard h3{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-size:1.3rem;font-weight:400;margin:0 0 .35rem}
+.bl-home .mapcard p{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-size:.95rem;color:var(--h-muted);line-height:1.5;margin:0}
+.bl-home .mapcard .go{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.8rem;color:var(--h-atlantic);margin-top:.7rem;font-weight:600}
+
+/* Feed */
+.bl-home .tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.6rem;font-family:var(--wp--preset--font-family--display,sans-serif)}
+.bl-home .tab{font-size:.82rem;padding:.42rem .9rem;border:1px solid var(--h-stone2);border-radius:999px;background:transparent;color:var(--h-muted);cursor:pointer;transition:.15s}
+.bl-home .tab:hover{border-color:var(--h-muted)}
+.bl-home .tab.on{background:var(--wp--preset--color--ink,#1E1A15);color:var(--wp--preset--color--paper,#F7F4ED);border-color:var(--wp--preset--color--ink,#1E1A15)}
+.bl-home .feed{columns:3;column-gap:1.3rem}
+@media(max-width:980px){.bl-home .feed{columns:2}.bl-home .maps{grid-template-columns:1fr}}
+@media(max-width:640px){.bl-home .feed{columns:1}.bl-home .wrap{padding:0 1.2rem}}
+/* Directory on its own: a real grid so the four member profiles read as one row.
+   The multi-column flow above fills vertically, which strands the 4th card.
+   Cards keep margin-bottom for the column layout, so zero it out inside the grid
+   and let `gap` do the spacing. */
+.bl-home .feed[data-filter="org"]{columns:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.3rem;align-items:start}
+.bl-home .feed[data-filter="org"] .card{margin-bottom:0}
+@media(max-width:1100px){.bl-home .feed[data-filter="org"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.bl-home .feed[data-filter="org"]{grid-template-columns:1fr}}
+.bl-home .card{break-inside:avoid;margin:0 0 1.3rem;border:1px solid var(--h-stone);border-radius:12px;padding:1.1rem 1.15rem;background:#FBF9F3}
+.bl-home .card.news{background:var(--wp--preset--color--paper,#F7F4ED)}
+.bl-home .kind{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;font-weight:700;display:inline-flex;align-items:center;gap:.4rem;padding:.24rem .6rem;border-radius:999px;margin-bottom:.75rem}
+.bl-home .k-org{background:rgba(39,89,111,.10);color:var(--h-atlantic)}
+.bl-home .k-offer{background:rgba(138,90,59,.12);color:var(--h-cork)}
+.bl-home .k-want{background:rgba(180,99,116,.14);color:var(--h-cistus)}
+.bl-home .k-news{background:rgba(107,98,85,.12);color:var(--h-muted)}
+.bl-home .card h4{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-weight:400;font-size:1.12rem;line-height:1.32;margin:0 0 .4rem}
+.bl-home .card .who{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.76rem;color:var(--h-dim);margin-bottom:.5rem}
+.bl-home .card p.desc{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-size:.9rem;color:var(--h-muted);line-height:1.5;margin:0}
+.bl-home .card .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+.bl-home .card .tag{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.68rem;color:var(--h-muted);background:var(--h-paper2);border:1px solid var(--h-stone);border-radius:6px;padding:.15rem .5rem}
+.bl-home .card .go{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.76rem;font-weight:600;margin-top:.75rem;display:inline-block;text-decoration:none;color:var(--h-atlantic)}
+.bl-home .card .rel{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.74rem;color:var(--h-dim);margin-top:.6rem}
+/* Growth-stage badges (charter ladder) */
+.bl-home .stage{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.66rem;letter-spacing:.05em;font-weight:700;display:inline-flex;align-items:center;gap:.3rem;padding:.24rem .6rem;border-radius:999px;margin:0 0 .75rem .4rem;border:1px solid;white-space:nowrap;vertical-align:top}
+.bl-home .st-established{background:rgba(58,110,71,.12);color:#356240;border-color:rgba(58,110,71,.32)}
+.bl-home .st-sapling{background:rgba(122,122,36,.13);color:#6E6E1F;border-color:rgba(122,122,36,.32)}
+.bl-home .st-seedling{background:rgba(180,140,60,.15);color:#8A5A3B;border-color:rgba(180,140,60,.34)}
+/* Ladder legend */
+.bl-home .ladder{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .5rem;margin-top:1.4rem;padding:.9rem 1rem;background:#FBF9F3;border:1px solid var(--h-stone);border-radius:10px}
+.bl-home .ladder .stage{margin:0}
+.bl-home .ladder-lead{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.74rem;font-weight:700;color:var(--h-muted);width:100%;margin-bottom:.2rem}
+.bl-home .ladder-def{font-family:var(--wp--preset--font-family--text,Georgia,serif);font-size:.82rem;color:var(--h-muted);margin-right:.9rem}
+@media(max-width:640px){.bl-home .ladder-def{width:100%;margin:0 0 .5rem}}
+.bl-home .note{font-family:var(--wp--preset--font-family--display,sans-serif);font-size:.72rem;color:var(--h-dim);background:var(--h-paper2);border:1px dashed var(--h-stone2);border-radius:8px;padding:.55rem .8rem;margin-top:1.2rem;display:inline-block}
+.bl-home .empty{font-family:var(--wp--preset--font-family--text,Georgia,serif);color:var(--h-dim);font-style:italic;padding:1rem 0}

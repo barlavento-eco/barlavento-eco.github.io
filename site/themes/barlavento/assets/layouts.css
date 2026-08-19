@@ -1,0 +1,138 @@
+/*
+ * Alternate desktop layouts — trial only.
+ *
+ * The centred baseline puts a 40rem text column and a 68rem figure on the same
+ * page, both centred, so the page has two competing left edges on a wide
+ * screen. Both layouts below fix that; they differ in what they do with the
+ * space that frees up.
+ *
+ * Below 1000px both collapse to the single-column baseline.
+ */
+
+@media (min-width: 1000px) {
+
+	/* ---------------------------------------------------------------
+	 * ASYMMETRIC — one left edge, and the right margin gets a job.
+	 * Text holds its measure but stops being centred; captions move out
+	 * beside the figures instead of under them.
+	 * --------------------------------------------------------------- */
+
+	.layout-asym .wp-block-post-content {
+		max-width: 68rem;
+		margin-inline: auto;
+	}
+
+	/* The theme's constrained-layout rules match at the same specificity and
+	   are emitted after this file, so they re-centre these children. Left edge
+	   is the whole point of this layout, hence the override. */
+	body.layout-asym .wp-block-post-content > * {
+		max-width: 40rem;
+		margin-left: 0 !important;
+		margin-right: auto !important;
+	}
+
+	body.layout-asym .wp-block-post-content > .alignwide {
+		max-width: 68rem;
+	}
+
+	/* Caption becomes marginalia rather than a footnote under the map. */
+	.layout-asym .ercb-map figure {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 15rem;
+		column-gap: 2rem;
+		align-items: start;
+	}
+
+	.layout-asym .ercb-map figcaption {
+		grid-column: 2;
+		margin-top: 0;
+		max-width: none;
+		border-top: 2px solid var(--wp--preset--color--stone);
+		padding-top: 0.6rem;
+	}
+
+	/* The page title is rendered by the template OUTSIDE post-content, so the
+	   rules above never reach it and it stayed centred over left-aligned body
+	   text. Give it the same left edge. */
+	body.layout-asym .wp-block-post-title {
+		max-width: 68rem;   /* must match this layout's container */
+		margin-inline: auto;
+		padding-inline: 0;
+	}
+
+	body.layout-sticky .wp-block-post-title {
+		max-width: 92rem;   /* match the sticky content container */
+		margin-inline: auto;
+		padding-inline: 0;
+	}
+
+	body.layout-asym .wp-block-post-title > *,
+	body.layout-sticky .wp-block-post-title > * {
+		margin-left: 0 !important;
+	}
+
+	/* ---------------------------------------------------------------
+	 * STICKY — the map is a reference object, so it stays put while the
+	 * text about it scrolls past. Uses a landscape screen as landscape.
+	 * --------------------------------------------------------------- */
+
+	.layout-sticky .wp-block-post-content {
+		display: grid;
+		/* Both maps share ONE wide layout so the two pages always match.
+		   The map column is held at >=60rem (960px) because that is where
+		   Restor flips from its stacked/sliced mode into clean side-by-side;
+		   the reading column narrows to a still-legible ~26rem measure. */
+		grid-template-columns: minmax(20rem, 26rem) minmax(60rem, 1fr);
+		column-gap: 3.5rem;
+		max-width: 92rem;
+		margin-inline: auto;
+		align-items: start;
+		align-content: start;
+		grid-auto-rows: min-content;
+	}
+
+	body.layout-sticky .wp-block-post-content > * {
+		grid-column: 1;
+		max-width: 38rem;
+		margin-left: 0 !important;
+		margin-right: auto !important;
+	}
+
+	body.layout-sticky .wp-block-post-content > .ercb-map-slot {
+		grid-column: 2;
+		/* `1 / -1` only spans EXPLICIT rows; with auto-placed content that
+		   collapses to a single tall row and punches a hole in the text
+		   column. Span far enough to cover every implicit row instead. */
+		grid-row: 1 / span 999;
+		max-width: none !important;
+		margin-left: 0 !important;
+		align-self: stretch;
+	}
+
+	.layout-sticky .ercb-map {
+		position: sticky;
+		top: 2rem;
+		margin-block: 0;
+	}
+
+	.layout-sticky .ercb-map .ercb-frame {
+		aspect-ratio: auto;
+		/* Restor only leaves its stacked/sliced embed mode when the frame is
+		   BOTH wide (>=960px, from the grid above) AND tall (>=~780px). At the
+		   old 640px height it stayed stacked no matter how wide the column was.
+		   Cap at 800px so a pinned map still fits a 1080p viewport. Both maps
+		   share this height, so the two pages stay identical. */
+		height: min(90vh, 800px);
+	}
+
+	/* The map slot is a constrained WP group, so its child (.ercb-map) is
+	   otherwise capped at contentSize (~40rem) and the frame never fills the
+	   wide column. Release it so BOTH maps span their whole slot — the D3
+	   social map gets room to breathe, and Restor clears its side-by-side
+	   breakpoint. !important because WP's generated constrained-layout rule
+	   matches at equal specificity and is emitted after this file. */
+	.layout-sticky .ercb-map-slot .ercb-map {
+		max-width: none !important;
+		width: 100%;
+	}
+}

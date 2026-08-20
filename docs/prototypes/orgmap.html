@@ -1,211 +1,260 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Social map — self-published prototype</title>
-<script src="vendor/d3.min.js"></script>
-<style>
-  :root{
-    --paper:#F7F4ED; --ink:#1E1A15; --stone:#E2DACB; --stone2:#D5CAB5; --paper2:#F0EADC;
-    --muted:#6B6255; --dim:#8C8375; --cork:#8A5A3B; --cistus:#B46374; --atlantic:#27596F;
-    --text:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
-    --display:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);
-       line-height:1.55;padding:2.5rem 1.25rem 4rem}
-  .wrap{max-width:1180px;margin:0 auto}
-  .eyebrow{font-family:var(--display);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
-           color:var(--cork);margin-bottom:.9rem}
-  h1{font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.28;margin:0 0 .6rem;letter-spacing:-.01em}
-  .lede{font-size:1rem;color:var(--muted);max-width:66ch;margin:0 0 1.2rem}
-  .prov{font-family:var(--display);font-size:.78rem;color:var(--muted);background:#FBF9F3;
-        border:1px solid var(--stone);border-radius:10px;padding:.8rem 1rem;margin:1.4rem 0;
-        display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;align-items:center}
-  .prov b{color:var(--ink)}
-  .prov button{font-family:var(--display);font-size:.76rem;font-weight:600;cursor:pointer;
-               border:1px solid var(--stone2);background:transparent;color:var(--muted);
-               border-radius:999px;padding:.32rem .85rem;margin-left:auto}
-  .prov button:hover{border-color:var(--muted)}
-  #wrapmap{border:1px solid var(--stone);border-radius:12px;background:#fff;overflow:hidden}
-  svg{display:block;width:100%;height:560px}
-  .lbl{font-family:var(--display);font-size:12px;font-weight:600;fill:var(--ink);pointer-events:none}
-  .sub{font-family:var(--display);font-size:10px;fill:var(--dim);pointer-events:none}
-  .edge{stroke:var(--atlantic);stroke-opacity:.42;stroke-width:1.6}
-  .edge.mutual{stroke-width:2.6;stroke-opacity:.62}
-  .callout{border-left:3px solid var(--atlantic);background:rgba(39,89,111,.06);
-           padding:1rem 1.15rem;border-radius:0 10px 10px 0;margin:1.8rem 0;font-size:.95rem}
-  .callout b{color:var(--ink)}
-  h2{font-family:var(--display);font-weight:600;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;
-     color:var(--muted);margin:2.2rem 0 .6rem;border-top:1px solid var(--stone);padding-top:1.4rem}
-  .why{font-size:.95rem;color:var(--muted);max-width:72ch}
-  table{border-collapse:collapse;font-size:.9rem;margin:.8rem 0}
-  th,td{text-align:left;padding:.35rem .9rem .35rem 0;border-bottom:1px solid var(--stone)}
-  th{font-family:var(--display);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .note{display:block;font-family:var(--display);font-size:.78rem;color:var(--dim);margin-top:2.4rem;
-        border-top:1px solid var(--stone);padding-top:1rem}
-  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
-       background:var(--paper2);padding:.05em .35em;border-radius:4px}
-  .err{border:1px solid var(--cistus);background:rgba(180,99,116,.08);border-radius:10px;padding:1rem 1.15rem}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barlavento Regeneration Network — Social System Map</title>
+  <meta name="description" content="Interactive social system map of the Mud Valley Foundation / Barlavento bioregional regeneration network." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="vendor/d3.min.js"></script>
+  <style>
+    :root{--bg:#0a0f1a;--bg-card:#111827;--bg-panel:#1a2236;--border:#2a3a5c;--border-light:#3a4a6c;--text:#e8edf5;--text-muted:#8899bb;--text-dim:#5a6a8c;--n-convener:#f5a623;--n-network:#a855f7;--n-initiative:#2dd4bf;--n-project:#3b82f6;--e-person:#f59e0b;--e-network:#a855f7;--e-convener:#6a7a9c;--e-region:#10b981;--accent:#6366f1}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:linear-gradient(135deg,var(--bg) 0%,#0f1729 50%,#0a1020 100%);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+    .header{padding:14px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(17,24,39,.85);backdrop-filter:blur(12px);flex-shrink:0;z-index:10}
+    .header-left{display:flex;align-items:center;gap:14px}
+    .header-logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--n-initiative),var(--n-project));display:flex;align-items:center;justify-content:center;font-size:18px}
+    .header h1{font-size:17px;font-weight:700;letter-spacing:-.02em}
+    .header .subtitle{font-size:11px;color:var(--text-muted);font-family:'DM Mono',monospace}
+    .header-right{display:flex;align-items:center;gap:12px}
+    .status-badge{padding:4px 10px;border-radius:20px;font-size:10px;font-family:'DM Mono',monospace;font-weight:500;display:flex;align-items:center;gap:5px}
+    .status-badge.static{background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+    .status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .search-box{position:relative}
+    .search-box input{width:200px;padding:7px 12px 7px 30px;background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+    .search-box input:focus{border-color:var(--accent)}
+    .search-box .icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.4}
+    .main{flex:1;display:flex;overflow:hidden;position:relative}
+    .graph-container{flex:1;position:relative}
+    .graph-container svg{display:block;width:100%;height:100%}
+    .legend{position:absolute;bottom:16px;left:16px;background:rgba(17,24,39,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-size:11px;z-index:5}
+    .legend-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:8px}
+    .legend-grid{display:flex;gap:22px}
+    .legend-col{display:flex;flex-direction:column;gap:5px}
+    .legend-item{display:flex;align-items:center;gap:8px;color:var(--text-muted);cursor:pointer;transition:opacity .2s;user-select:none}
+    .legend-item.disabled{opacity:.3}
+    .legend-node{width:12px;height:12px;border-radius:50%}
+    .legend-hint{font-size:9px;color:var(--text-dim);margin-top:8px}
+    .tooltip{position:absolute;top:16px;right:16px;background:rgba(17,24,39,.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:12px;padding:12px 16px;max-width:280px;pointer-events:none;z-index:5;opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .15s}
+    .tooltip.visible{opacity:1;transform:translateY(0)}
+    .tooltip-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .tooltip-dot{width:10px;height:10px;border-radius:50%}
+    .tooltip-name{font-weight:700;font-size:14px}
+    .tooltip-purpose{font-size:12px;color:var(--text-muted);line-height:1.4}
+    .tooltip-meta{margin-top:6px;font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace}
+    .detail-panel{width:320px;border-left:1px solid var(--border);background:var(--bg-card);padding:20px;overflow-y:auto;flex-shrink:0;transform:translateX(100%);transition:transform .25s ease-out;z-index:5}
+    .detail-panel.open{transform:translateX(0)}
+    .detail-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+    .detail-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .detail-name{font-size:16px;font-weight:700;line-height:1.25}
+    .detail-type{margin-top:3px;font-size:11px;color:var(--text-dim);font-family:'DM Mono',monospace}
+    .close-btn{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;padding:4px}
+    .close-btn:hover{color:var(--text)}
+    .purpose-box{padding:12px 14px;background:var(--bg-panel);border-radius:10px;margin-bottom:14px}
+    .section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:6px}
+    .purpose-text{font-size:13px;line-height:1.5}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+    .tag{display:inline-block;padding:3px 9px;background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;font-size:10px;color:var(--text-muted)}
+    .detail-links{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+    .detail-links a{font-size:11px;font-family:'DM Mono',monospace;color:var(--text);text-decoration:none;padding:6px 11px;background:var(--bg-panel);border:1px solid var(--border-light);border-radius:8px;transition:border-color .15s,color .15s}
+    .detail-links a:hover{border-color:var(--accent);color:#fff}
+    .conn-list{display:flex;flex-direction:column;gap:6px}
+    .conn-item{padding:10px 12px;background:var(--bg-panel);border-radius:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s}
+    .conn-item:hover{background:rgba(58,74,108,.3)}
+    .conn-bar{width:4px;height:30px;border-radius:2px;flex-shrink:0}
+    .conn-name{font-size:13px;font-weight:500}
+    .conn-type{font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;margin-bottom:4px}
+    .stat-box{text-align:center;padding:9px 4px;background:rgba(10,15,26,.5);border-radius:6px}
+    .stat-value{font-size:17px;font-weight:700}
+    .stat-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+    .loading-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:20;transition:opacity .5s}
+    .loading-overlay.hidden{opacity:0;pointer-events:none}
+    .loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{margin-top:14px;font-size:13px;color:var(--text-muted)}
+    @media(max-width:768px){.header{padding:10px 14px}.header h1{font-size:14px}.search-box input{width:130px}.detail-panel{width:270px}.legend{bottom:10px;left:10px;padding:10px 14px}.legend-grid{gap:14px}}
+  </style>
 </head>
 <body>
-<div class="wrap">
-
-  <div class="eyebrow">Prototype · barlavento.eco</div>
-  <h1>The social map, drawn only from what members publish about themselves</h1>
-  <p class="lede">Every node and every line below was fetched from a member's own website when this page
-  loaded. Nobody is on this map who did not put themselves on it, and no relationship is shown that the
-  organisation did not declare from its own domain.</p>
-
-  <div class="callout">
-    <b>This is the experiment proposed in issue #14, not a replacement for the existing map.</b>
-    The current Social System Map centres the convening organisation because more than half its recorded
-    edges are that organisation's own assertions about everyone else — an artifact of the data, which no
-    amount of restyling can move. This page asks the other question: <b>what shape does the network have
-    when nobody is asserting it?</b>
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">🌍</div>
+      <div><h1>Barlavento Regeneration Network</h1><div class="subtitle">Social System Map · Mud Valley Foundation</div></div>
+    </div>
+    <div class="header-right">
+      <div class="status-badge static"><div class="status-dot"></div><span>Static snapshot · 14 projects</span></div>
+      <div class="search-box"><span class="icon">🔍</span><input type="text" id="searchInput" placeholder="Search projects, themes, region…" /></div>
+    </div>
   </div>
-
-  <div class="prov" id="prov"><span>Loading…</span></div>
-  <div id="wrapmap"><svg id="svg"></svg></div>
-
-  <h2>What you are looking at</h2>
-  <p class="why">Each circle is an organisation with a published Murmurations profile carrying the
-  <code>barlavento-eco</code> tag. Each line is a <code>https://schema.org/affiliation</code> relationship
-  declared in one of those profiles. <b>Thicker lines are mutual</b> — both organisations independently
-  declared the other. Circle size reflects how many relationships an organisation declares and receives.</p>
-
-  <h2>Why this matters beyond the layout</h2>
-  <table id="cmp">
-    <tr><th></th><th>Spreadsheet map</th><th>This map</th></tr>
-    <tr><td>Organisations shown</td><td>14</td><td id="n-orgs">–</td></tr>
-    <tr><td>Who decides they appear</td><td>we do</td><td><b>they do</b></td></tr>
-    <tr><td>Named individuals</td><td>one per organisation</td><td><b>none</b></td></tr>
-    <tr><td>Unconfirmed edges</td><td>at least one, flagged</td><td><b>none possible</b></td></tr>
-    <tr><td>Consent needed to publish</td><td><b>yes, and not yet obtained</b></td><td><b>none — publishing is the consent</b></td></tr>
-  </table>
-  <p class="why">That last row is the whole argument. A map built from self-published profiles cannot
-  contain someone who did not opt in, cannot carry a contact name nobody offered, and cannot assert a
-  relationship nobody claimed — <b>because nobody publishes a guess about themselves.</b> The trade is
-  honest and it is a real trade: this map is smaller.</p>
-
-  <span class="note" id="foot"></span>
-</div>
-
-<script>
-const INDEX_QUERY = "https://index.murmurations.network/v2/nodes"
-  + "?tags=barlavento-eco&tags_exact=true&status=posted&page_size=100&tags_filter=and";
-const host = u => { try { return new URL(u).host.toLowerCase().replace(/^www\./,""); } catch(e){ return ""; } };
-
-async function run(){
-  const prov = document.getElementById("prov"), foot = document.getElementById("foot");
-  prov.innerHTML = "<span>Querying the Index…</span>";
-  d3.select("#svg").selectAll("*").remove();
-  const t0 = performance.now();
-
-  let idx;
-  try {
-    const r = await fetch(INDEX_QUERY, {cache:"no-store"});
-    if(!r.ok) throw new Error("HTTP " + r.status);
-    idx = await r.json();
-  } catch(e){
-    prov.innerHTML = "<span>Index unreachable</span>";
-    document.getElementById("wrapmap").innerHTML =
-      '<div class="err"><b>The map could not be drawn.</b><br>The Murmurations Index did not answer ('
-      + e.message + '). Nothing is cached here — which is the honest failure mode for a page that holds '
-      + 'no member data of its own.</div>';
-    return;
-  }
-
-  const orgNodes = (idx.data||[])
-    .filter(n => (n.tags||[]).includes("barlavento-eco"))
-    .filter(n => (n.linked_schemas||[]).some(s => s.startsWith("organizations_schema")));
-
-  const profiles = await Promise.all(orgNodes.map(async n => {
-    try { const r = await fetch(n.profile_url, {cache:"no-store"});
-          return r.ok ? await r.json() : null; } catch(e){ return null; }
-  }));
-
-  const nodes = [], byHost = new Map();
-  profiles.forEach(p => {
-    if(!p || !p.name) return;
-    const h = host(p.primary_url);
-    const node = { id: h || p.name, name: p.name, nick: p.nickname || p.name,
-                   url: p.primary_url, out: 0, deg: 0 };
-    nodes.push(node); if(h) byHost.set(h, node);
-  });
-
-  const raw = [];
-  profiles.forEach(p => {
-    if(!p || !p.name) return;
-    const from = byHost.get(host(p.primary_url));
-    (p.relationships||[]).forEach(r => {
-      const to = byHost.get(host(r.object_url));
-      if(from && to && from !== to) raw.push({source:from, target:to, predicate:r.predicate_url});
-    });
-  });
-
-  // Collapse A→B and B→A into one line, marked mutual.
-  const seen = new Map();
-  raw.forEach(e => {
-    const k = [e.source.id, e.target.id].sort().join("|");
-    if(seen.has(k)) seen.get(k).mutual = true;
-    else seen.set(k, {source:e.source, target:e.target, mutual:false});
-  });
-  const links = [...seen.values()];
-  raw.forEach(e => { e.source.out++; });
-  links.forEach(l => { l.source.deg++; l.target.deg++; });
-
-  document.getElementById("n-orgs").innerHTML = "<b>" + nodes.length + "</b>";
-
-  const svg = d3.select("#svg"), W = svg.node().clientWidth, H = svg.node().clientHeight;
-  const g = svg.append("g");
-  svg.call(d3.zoom().scaleExtent([.4,3]).on("zoom", e => g.attr("transform", e.transform)));
-
-  const link = g.append("g").selectAll("line").data(links).join("line")
-    .attr("class", d => "edge" + (d.mutual ? " mutual" : ""));
-
-  const node = g.append("g").selectAll("g").data(nodes).join("g")
-    .call(d3.drag()
-      .on("start",(e,d)=>{ if(!e.active) sim.alphaTarget(.3).restart(); d.fx=d.x; d.fy=d.y; })
-      .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
-      .on("end",(e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
-
-  const r = d => 16 + d.deg * 5;
-  node.append("circle").attr("r", r).attr("fill", "rgba(39,89,111,.10)")
-      .attr("stroke", "#27596F").attr("stroke-width", 1.6);
-  node.append("text").attr("class","lbl").attr("text-anchor","middle")
-      .attr("dy", d => -r(d) - 8).text(d => d.nick);
-  node.append("text").attr("class","sub").attr("text-anchor","middle")
-      .attr("dy", d => r(d) + 15).text(d => d.deg + (d.deg===1?" link":" links"));
-
-  const sim = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).id(d=>d.id).distance(190).strength(.5))
-    .force("charge", d3.forceManyBody().strength(-900).distanceMax(520))
-    .force("center", d3.forceCenter(W/2, H/2))
-    .force("collision", d3.forceCollide().radius(d => r(d) + 34))
-    .on("tick", () => {
-      link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
-          .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
-      node.attr("transform", d => `translate(${d.x},${d.y})`);
-    });
-
-  const ms = Math.round(performance.now() - t0);
-  const mutual = links.filter(l=>l.mutual).length;
-  const top = nodes.slice().sort((a,b)=>b.deg-a.deg)[0];
-  prov.innerHTML = `<span><b>${nodes.length}</b> organisations</span>
-    <span><b>${raw.length}</b> declared relationships</span>
-    <span>→ <b>${links.length}</b> connections, <b>${mutual}</b> of them mutual</span>
-    <span>most connected: <b>${top ? top.nick : "–"}</b></span>
-    <span>${ms} ms</span>
-    <button onclick="run()">Run again</button>`;
-  foot.innerHTML = "Fetched live at " + new Date().toLocaleTimeString()
-    + ". Sources: the Murmurations Index, then each organisation's own <code>profile.json</code>. "
-    + "This page stores nothing — if a member edits their profile, this map changes; if a member "
-    + "leaves, they disappear from it.";
-}
-run();
-</script>
+  <div class="main">
+    <div class="graph-container" id="graphContainer">
+      <svg id="graphSvg"></svg>
+      <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><div class="loading-text">Loading network…</div></div>
+      <div class="legend">
+        <div class="legend-title">Legend · click edges to toggle</div>
+        <div class="legend-grid">
+          <div class="legend-col">
+            <div class="legend-item"><div class="legend-node" style="border:2px solid var(--n-convener);background:rgba(245,166,35,.2)"></div>Convener</div>
+            <div class="legend-item"><div class="legend-node" style="border:2px solid var(--n-network);background:rgba(168,85,247,.2)"></div>Network</div>
+            <div class="legend-item"><div class="legend-node" style="border:2px solid var(--n-initiative);background:rgba(45,212,191,.2)"></div>Initiative</div>
+            <div class="legend-item"><div class="legend-node" style="border:2px solid var(--n-project);background:rgba(59,130,246,.2)"></div>Project</div>
+          </div>
+          <div class="legend-col">
+            <div class="legend-item" data-filter="person"><svg width="22" height="3"><line x1="0" y1="1.5" x2="22" y2="1.5" stroke="var(--e-person)" stroke-width="2.5"/></svg>Shared person</div>
+            <div class="legend-item" data-filter="network"><svg width="22" height="3"><line x1="0" y1="1.5" x2="22" y2="1.5" stroke="var(--e-network)" stroke-width="2.5" stroke-dasharray="6,3"/></svg>Network / RNF</div>
+            <div class="legend-item" data-filter="region"><svg width="22" height="3"><line x1="0" y1="1.5" x2="22" y2="1.5" stroke="var(--e-region)" stroke-width="2" stroke-dasharray="7,4"/></svg>Same sub-region</div>
+            <div class="legend-item" data-filter="convener"><svg width="22" height="3"><line x1="0" y1="1.5" x2="22" y2="1.5" stroke="var(--e-convener)" stroke-width="1.5" stroke-dasharray="2,4"/></svg>Convener link</div>
+          </div>
+        </div>
+        <div class="legend-hint">Drag nodes · scroll to zoom · click a node for details</div>
+      </div>
+      <div class="tooltip" id="tooltip">
+        <div class="tooltip-header"><div class="tooltip-dot" id="tooltipDot"></div><span class="tooltip-name" id="tooltipName"></span></div>
+        <div class="tooltip-purpose" id="tooltipPurpose"></div>
+        <div class="tooltip-meta" id="tooltipMeta"></div>
+      </div>
+    </div>
+    <div class="detail-panel" id="detailPanel">
+      <div class="detail-header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="detail-icon" id="detailIcon">◉</div>
+          <div><div class="detail-name" id="detailName"></div><div class="detail-type" id="detailType"></div></div>
+        </div>
+        <button class="close-btn" id="detailClose">✕</button>
+      </div>
+      <div class="purpose-box" id="purposeBox" style="display:none"><div class="section-label">About</div><div class="purpose-text" id="detailPurpose"></div></div>
+      <div class="tags" id="detailTags"></div>
+      <div class="detail-links" id="detailLinks"></div>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="section-label" id="connLabel" style="margin-top:16px">Connections (0)</div>
+      <div class="conn-list" id="connList"></div>
+    </div>
+  </div>
+  <script>
+    const DATA={
+      nodes:[
+        {id:"vale-da-lama",name:"Quinta Vale da Lama",type:"Project",region:"Odiaxere",themes:["Agroforestry","Market garden","Agrotourism","Education"],size:"43",involved:"10-12",benefitting:"Hundreds",contact:"Walt Ludwick",website:"valedalama.net",restor:"https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/cf668730-6244-4a69-a467-a7978198bed1/",purpose:"43-ha regenerative farm improving soil, water, biodiversity and livelihoods via regen agriculture and ecosystem restoration."},
+        {id:"mud-valley",name:"Mud Valley Foundation",type:"Convener",region:"Odiaxere",themes:["Education & Training","Research","Grantmaking"],size:"",involved:"5",benefitting:"Dozens",contact:"Richard Rushing",website:"mudvalley.org",restor:"",purpose:"Regenerative education, research and grantmaking nonprofit near Lagos; convenes the bioregional network."},
+        {id:"vinha-velha",name:"Vinha Velha",type:"Project",region:"Barão de São João",themes:["Organic farming","Regenerative living","Agrotourism"],size:"140",involved:"10-15",benefitting:"50+",contact:"Florian Neumayer",website:"vinhavelha.com",restor:"https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/093e0ad1-1313-4e5e-9e85-6269e6238816/",purpose:"2nd-generation organic farm dedicated to regenerative living, with accommodation and activities."},
+        {id:"apv",name:"African Peace Village",type:"Project",region:"Burgau",themes:["Water-cycle restoration","Ecological building","Agriculture","Youth entrepreneurship"],size:"5",involved:"3",benefitting:"6",contact:"Joshua Konkankoh",website:"africanway.world",restor:"https://restor.eco/sites/6f4ed5e2-6235-4963-9246-a4be32bac490/",purpose:"Center linking Africa and the world through watershed regeneration, ecological building and youth entrepreneurship."},
+        {id:"rnf",name:"Restore Nature Foundation & Collective",type:"Network",region:"",themes:["Agroforestry","Water management","Soil","Landscape regeneration","Consultancy"],size:"40",involved:"7",benefitting:"20",contact:"Matthijs Wansink",website:"restorenaturecollective.com",restor:"",purpose:"Holistic landscape-regeneration collective offering agroforestry, water and soil services."},
+        {id:"corte-medronheira",name:"Corte Medronheira",type:"Project",region:"Bensafrim",themes:["Water retention","Agroforestry","Reforestation","Rewilding"],size:"37",involved:"14",benefitting:"50",contact:"Hugo Oliveira",website:"",restor:"https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/870ae364-6105-465a-8c01-f4c269e8a7ed/",purpose:"36-ha cork-oak and strawberry-tree land; an extended family practising immersive regenerative living."},
+        {id:"machada",name:"Santuário de Machada",type:"Project",region:"Bensafrim",themes:["Waterline restoration","Agroforestry","Reforestation"],size:"13",involved:"4",benefitting:"tbd",contact:"Christin Lidzba",website:"",restor:"",purpose:"13-ha wild cork-oak and medronho forest; ecological and hydrological regeneration in the Ribeira de Bensafrim catchment."},
+        {id:"tres-figos",name:"Quinta dos Três Figos",type:"Project",region:"Marmelete",themes:["Organic farming","Orchard","Water (dam)","Ecosystem regeneration"],size:"20",involved:"2",benefitting:"2",contact:"Frederic Airaud",website:"",restor:"https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/aa892274-c215-4d62-91b0-b3893208ae81/",purpose:"Organic farm with a rainwater dam (2018), a 4-ha fruit orchard and 16 ha of ecosystem regeneration."},
+        {id:"jasmim",name:"Quinta do Jasmim",type:"Project",region:"Bensafrim",themes:["Medicinal garden","Apothecary","Education","Biodiversity"],size:"2",involved:"2",benefitting:"Local community",contact:"Jaya Perret",website:"mamaseednaturals.com",restor:"",purpose:"Educative and productive medicine garden and apothecary with herbal workshops for children and adults."},
+        {id:"zambujeira",name:"Zambujeira de Fora (RNF)",type:"Project",region:"Barão de São João",themes:["Successional agroforestry","Plant diversity"],size:"1.2",involved:"1",benefitting:"4",contact:"Manuel Castro",website:"",restor:"",purpose:"Family project: experimental successional agroforestry increasing plant diversity and density."},
+        {id:"horizonte",name:"Quinta do Horizonte (RNF)",type:"Project",region:"Pedralva",themes:["Water retention","Syntropic agroforestry","Compost & biostimulants","Soil biology","Training"],size:"8.5",involved:"1",benefitting:"Dozens",contact:"Jeroen Boss",website:"revive.land",restor:"https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/2b0dd41a-34f0-4919-9519-bf4e037c0f44/",purpose:"Water-soil-plant regeneration site with a soil-microbiology lab, compost/biostimulant production, consultancy and training."},
+        {id:"lagos-mais-verde",name:"Lagos Mais Verde",type:"Initiative",region:"Lagos",themes:["Urban greening","Civic engagement"],size:"",involved:"",benefitting:"Hundreds",contact:"Joana Reis",website:"lagosmaisverde.org",restor:"",purpose:"Lagos urban-greening and civic engagement initiative."},
+        {id:"bravura",name:"Eco-Aldeia da Bravura",type:"Project",region:"Lagos & Monchique",themes:["Ecovillage"],size:"244",involved:"",benefitting:"",contact:"Bernardo Rosario",website:"",restor:"https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/84c757b9-6332-4311-9d8d-23b09fc03ec6/",purpose:"Ecovillage project near the Bravura reservoir (Lagos / Monchique)."},
+        {id:"mata-viva",name:"Mata Viva",type:"Initiative",region:"Barão de São João",themes:["Post-fire restoration","Reforestation","Native biodiversity","Education & arts","Community mobilization"],size:"7-129",involved:"25-100",benefitting:"Thousands",contact:"Sofia Portela",website:"",restor:"",purpose:"Volunteer movement for participative post-fire restoration in the Barão de São João public forest, with ecological, educational and artistic actions."}
+      ],
+      edges:[
+        {source:"corte-medronheira",target:"jasmim",etype:"person",label:"Ana Santos",strength:3,directed:false},
+        {source:"vale-da-lama",target:"mud-valley",etype:"person",label:"Walt Ludwick",strength:3,directed:false},
+        {source:"rnf",target:"horizonte",etype:"network",label:"RNF / Jeroen Boss",strength:3,directed:true},
+        {source:"rnf",target:"zambujeira",etype:"network",label:"RNF / Manuel Castro",strength:3,directed:true},
+        {source:"rnf",target:"vinha-velha",etype:"network",label:"Based at Vinha Velha? (confirm)",strength:1,directed:true,candidate:true},
+        {source:"mud-valley",target:"vinha-velha",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"apv",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"rnf",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"corte-medronheira",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"machada",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"tres-figos",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"jasmim",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"zambujeira",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"horizonte",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"lagos-mais-verde",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"bravura",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"mud-valley",target:"mata-viva",etype:"convener",label:"Network convener",strength:2,directed:true},
+        {source:"corte-medronheira",target:"machada",etype:"region",label:"Bensafrim",strength:1,directed:false},
+        {source:"machada",target:"jasmim",etype:"region",label:"Bensafrim",strength:1,directed:false},
+        {source:"vinha-velha",target:"zambujeira",etype:"region",label:"Barão de São João",strength:1,directed:false},
+        {source:"vinha-velha",target:"mata-viva",etype:"region",label:"Barão de São João",strength:1,directed:false},
+        {source:"zambujeira",target:"mata-viva",etype:"region",label:"Barão de São João",strength:1,directed:false},
+        {source:"lagos-mais-verde",target:"bravura",etype:"region",label:"Lagos area",strength:1,directed:false}
+      ]
+    };
+    const NODE_STYLES={convener:{color:"#f5a623",r:30},network:{color:"#a855f7",r:25},initiative:{color:"#2dd4bf",r:21},project:{color:"#3b82f6",r:20}};
+    const EDGE_STYLES={person:{color:"#f59e0b",width:2.5,dash:null,label:"Shared person"},network:{color:"#a855f7",width:2.5,dash:"6,3",label:"Network / RNF"},convener:{color:"#6a7a9c",width:1.3,dash:"2,4",label:"Convener link"},region:{color:"#10b981",width:1.8,dash:"7,4",label:"Same sub-region"}};
+    const activeFilters={person:true,network:true,convener:true,region:true};
+    let graphData=null,selectedNode=null,simulation=null;
+    const nstyle=n=>NODE_STYLES[(n.type||"project").toLowerCase()]||NODE_STYLES.project;
+    function renderGraph(data){
+      graphData=data;
+      const container=document.getElementById("graphContainer");
+      const width=container.clientWidth,height=container.clientHeight;
+      const svg=d3.select("#graphSvg").attr("width",width).attr("height",height);
+      svg.selectAll("*").remove();
+      const defs=svg.append("defs");
+      const glow=defs.append("filter").attr("id","glow").attr("x","-50%").attr("y","-50%").attr("width","200%").attr("height","200%");
+      glow.append("feGaussianBlur").attr("stdDeviation","4").attr("result","coloredBlur");
+      const merge=glow.append("feMerge");merge.append("feMergeNode").attr("in","coloredBlur");merge.append("feMergeNode").attr("in","SourceGraphic");
+      Object.entries(EDGE_STYLES).forEach(([type,style])=>{defs.append("marker").attr("id",`arrow-${type}`).attr("viewBox","0 -5 10 10").attr("refX",22).attr("refY",0).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,-4L10,0L0,4").attr("fill",style.color).attr("opacity",.75)});
+      const g=svg.append("g");
+      const zoom=d3.zoom().scaleExtent([.3,3]).on("zoom",e=>g.attr("transform",e.transform));
+      svg.call(zoom);
+      const nodes=data.nodes.map(n=>({...n,radius:nstyle(n).r,color:nstyle(n).color}));
+      const visibleEdges=data.edges.filter(e=>activeFilters[e.etype]).map(e=>({...e,style:EDGE_STYLES[e.etype]}));
+      simulation=d3.forceSimulation(nodes)
+        .force("link",d3.forceLink(visibleEdges).id(d=>d.id).distance(d=>d.etype==="convener"?170:d.etype==="region"?90:110).strength(d=>d.etype==="convener"?.25:d.etype==="person"?.7:d.etype==="network"?.6:.4))
+        .force("charge",d3.forceManyBody().strength(-520).distanceMax(420))
+        .force("center",d3.forceCenter(width/2,height/2))
+        .force("collision",d3.forceCollide().radius(d=>d.radius+16))
+        .force("x",d3.forceX(width/2).strength(.05)).force("y",d3.forceY(height/2).strength(.05));
+      const link=g.append("g").selectAll("line").data(visibleEdges).join("line")
+        .attr("stroke",d=>d.style.color).attr("stroke-width",d=>d.style.width+(d.strength-1)*0.5)
+        .attr("stroke-dasharray",d=>d.style.dash).attr("stroke-opacity",d=>d.etype==="convener"?.3:.55)
+        .attr("marker-end",d=>d.directed?`url(#arrow-${d.etype})`:null);
+      const node=g.append("g").selectAll("g").data(nodes).join("g").attr("cursor","pointer")
+        .call(d3.drag().on("start",(e,d)=>{if(!e.active)simulation.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y}).on("drag",(e,d)=>{d.fx=e.x;d.fy=e.y}).on("end",(e,d)=>{if(!e.active)simulation.alphaTarget(0);d.fx=null;d.fy=null}));
+      node.append("circle").attr("r",d=>d.radius).attr("fill",d=>d.color+"22").attr("stroke",d=>d.color).attr("stroke-width",d=>d.type==="Convener"?3:2.2).attr("filter","url(#glow)");
+      node.each(function(d){d3.select(this).append("circle").attr("r",d.radius*.5).attr("fill","none").attr("stroke",d.color).attr("stroke-width",1.3).attr("stroke-opacity",.45)});
+      node.append("text").text(d=>d.name).attr("text-anchor","middle").attr("dy",d=>d.radius+15).attr("fill","#e8edf5").attr("font-size",d=>d.type==="Convener"||d.type==="Network"?"12px":"11px").attr("font-weight",d=>d.type==="Convener"?"700":"500").attr("font-family","'DM Sans',sans-serif").attr("paint-order","stroke").attr("stroke","#0a0f1a").attr("stroke-width",3).style("pointer-events","none");
+      node.on("mouseenter",function(event,d){showTooltip(d);d3.select(this).select("circle").transition().duration(200).attr("r",d.radius*1.15);
+        link.transition().duration(200).attr("stroke-opacity",l=>l.source.id===d.id||l.target.id===d.id?.95:.08);
+        node.transition().duration(200).attr("opacity",n=>{if(n.id===d.id)return 1;return visibleEdges.some(e=>(e.source.id===d.id&&e.target.id===n.id)||(e.target.id===d.id&&e.source.id===n.id))?1:.22})});
+      node.on("mouseleave",function(event,d){hideTooltip();d3.select(this).select("circle").transition().duration(200).attr("r",d.radius);
+        link.transition().duration(200).attr("stroke-opacity",l=>l.etype==="convener"?.3:.55);
+        node.transition().duration(200).attr("opacity",1)});
+      node.on("click",(event,d)=>{event.stopPropagation();showDetail(d)});
+      svg.on("click",()=>hideDetail());
+      simulation.on("tick",()=>{link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y).attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);node.attr("transform",d=>`translate(${d.x},${d.y})`)});
+      setTimeout(()=>{svg.transition().duration(800).call(zoom.transform,d3.zoomIdentity.translate(width*.06,height*.04).scale(.85))},400);
+      window._refs={node,link,visibleEdges,nodes};
+    }
+    function showTooltip(d){if(selectedNode)return;document.getElementById("tooltipDot").style.background=d.color;document.getElementById("tooltipName").textContent=d.name;document.getElementById("tooltipPurpose").textContent=d.purpose||"";document.getElementById("tooltipMeta").textContent=`${d.type}${d.region?" · "+d.region:""} · click for details`;document.getElementById("tooltip").classList.add("visible")}
+    function hideTooltip(){document.getElementById("tooltip").classList.remove("visible")}
+    function showDetail(d){
+      selectedNode=d;hideTooltip();
+      const icon=document.getElementById("detailIcon");icon.style.border=`2.5px solid ${d.color}`;icon.style.background=d.color+"22";icon.textContent=d.type==="Convener"?"★":d.type==="Network"?"◆":"●";
+      document.getElementById("detailName").textContent=d.name;
+      document.getElementById("detailType").textContent=`${d.type}${d.region?" · "+d.region:""}`;
+      const pb=document.getElementById("purposeBox");if(d.purpose){pb.style.display="block";pb.style.borderLeft=`3px solid ${d.color}`;document.getElementById("detailPurpose").textContent=d.purpose}else pb.style.display="none";
+      document.getElementById("detailTags").innerHTML=(d.themes||[]).map(t=>`<span class="tag">${t}</span>`).join("");
+      const links=[];if(d.website)links.push(`<a href="https://${d.website.replace(/^https?:\/\//,"")}" target="_blank" rel="noopener">🔗 ${d.website.replace(/^https?:\/\//,"")}</a>`);if(d.restor)links.push(`<a href="${d.restor}" target="_blank" rel="noopener">🌱 Restor.eco</a>`);
+      document.getElementById("detailLinks").innerHTML=links.join("");
+      const conns=graphData.edges.filter(e=>{const s=e.source.id||e.source,t=e.target.id||e.target;return s===d.id||t===d.id});
+      const stats=[{label:"Size (ha)",value:d.size||"—"},{label:"Involved",value:d.involved||"—"},{label:"Benefitting",value:d.benefitting||"—"},{label:"Connections",value:conns.length}];
+      document.getElementById("statsGrid").innerHTML=stats.map(s=>`<div class="stat-box"><div class="stat-value" style="color:${d.color}">${s.value}</div><div class="stat-label">${s.label}</div></div>`).join("");
+      document.getElementById("connLabel").textContent=`Connections (${conns.length})`;
+      const cl=document.getElementById("connList");cl.innerHTML="";
+      conns.forEach(conn=>{const s=conn.source.id||conn.source,t=conn.target.id||conn.target;const otherId=s===d.id?t:s;const other=graphData.nodes.find(n=>n.id===otherId);if(!other)return;
+        const dir=conn.directed?(s===d.id?"→":"←"):"↔";
+        const item=document.createElement("div");item.className="conn-item";
+        item.innerHTML=`<div class="conn-bar" style="background:${EDGE_STYLES[conn.etype].color}"></div><div><div class="conn-name">${other.name}</div><div class="conn-type">${dir} ${conn.label} · ${EDGE_STYLES[conn.etype].label}</div></div>`;
+        item.addEventListener("click",()=>{const on=window._refs?.nodes.find(n=>n.id===otherId);if(on)showDetail(on)});cl.appendChild(item)});
+      document.getElementById("detailPanel").classList.add("open");
+    }
+    function hideDetail(){selectedNode=null;document.getElementById("detailPanel").classList.remove("open")}
+    document.getElementById("detailClose").addEventListener("click",hideDetail);
+    document.getElementById("searchInput").addEventListener("input",function(){const q=this.value.toLowerCase();if(!window._refs)return;window._refs.node.transition().duration(200).attr("opacity",d=>{if(!q)return 1;const hay=[d.name,d.region,d.contact,d.purpose,(d.themes||[]).join(" ")].join(" ").toLowerCase();return hay.includes(q)?1:.1})});
+    document.querySelectorAll(".legend-item[data-filter]").forEach(item=>{item.addEventListener("click",function(){const t=this.dataset.filter;activeFilters[t]=!activeFilters[t];this.classList.toggle("disabled",!activeFilters[t]);if(graphData)renderGraph(graphData)})});
+    window.addEventListener("resize",()=>{if(graphData)renderGraph(graphData)});
+    renderGraph(DATA);
+    setTimeout(()=>document.getElementById("loadingOverlay").classList.add("hidden"),500);
+  </script>
 </body>
 </html>

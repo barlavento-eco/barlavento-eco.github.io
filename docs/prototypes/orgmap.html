@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Social map — self-published prototype</title>
+<script src="vendor/d3.min.js"></script>
+<style>
+  :root{
+    --paper:#F7F4ED; --ink:#1E1A15; --stone:#E2DACB; --stone2:#D5CAB5; --paper2:#F0EADC;
+    --muted:#6B6255; --dim:#8C8375; --cork:#8A5A3B; --cistus:#B46374; --atlantic:#27596F;
+    --text:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --display:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);
+       line-height:1.55;padding:2.5rem 1.25rem 4rem}
+  .wrap{max-width:1180px;margin:0 auto}
+  .eyebrow{font-family:var(--display);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+           color:var(--cork);margin-bottom:.9rem}
+  h1{font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.28;margin:0 0 .6rem;letter-spacing:-.01em}
+  .lede{font-size:1rem;color:var(--muted);max-width:66ch;margin:0 0 1.2rem}
+  .prov{font-family:var(--display);font-size:.78rem;color:var(--muted);background:#FBF9F3;
+        border:1px solid var(--stone);border-radius:10px;padding:.8rem 1rem;margin:1.4rem 0;
+        display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;align-items:center}
+  .prov b{color:var(--ink)}
+  .prov button{font-family:var(--display);font-size:.76rem;font-weight:600;cursor:pointer;
+               border:1px solid var(--stone2);background:transparent;color:var(--muted);
+               border-radius:999px;padding:.32rem .85rem;margin-left:auto}
+  .prov button:hover{border-color:var(--muted)}
+  #wrapmap{border:1px solid var(--stone);border-radius:12px;background:#fff;overflow:hidden}
+  svg{display:block;width:100%;height:560px}
+  .lbl{font-family:var(--display);font-size:12px;font-weight:600;fill:var(--ink);pointer-events:none}
+  .sub{font-family:var(--display);font-size:10px;fill:var(--dim);pointer-events:none}
+  .edge{stroke:var(--atlantic);stroke-opacity:.42;stroke-width:1.6}
+  .edge.mutual{stroke-width:2.6;stroke-opacity:.62}
+  .callout{border-left:3px solid var(--atlantic);background:rgba(39,89,111,.06);
+           padding:1rem 1.15rem;border-radius:0 10px 10px 0;margin:1.8rem 0;font-size:.95rem}
+  .callout b{color:var(--ink)}
+  h2{font-family:var(--display);font-weight:600;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;
+     color:var(--muted);margin:2.2rem 0 .6rem;border-top:1px solid var(--stone);padding-top:1.4rem}
+  .why{font-size:.95rem;color:var(--muted);max-width:72ch}
+  table{border-collapse:collapse;font-size:.9rem;margin:.8rem 0}
+  th,td{text-align:left;padding:.35rem .9rem .35rem 0;border-bottom:1px solid var(--stone)}
+  th{font-family:var(--display);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .note{display:block;font-family:var(--display);font-size:.78rem;color:var(--dim);margin-top:2.4rem;
+        border-top:1px solid var(--stone);padding-top:1rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+       background:var(--paper2);padding:.05em .35em;border-radius:4px}
+  .err{border:1px solid var(--cistus);background:rgba(180,99,116,.08);border-radius:10px;padding:1rem 1.15rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Prototype · barlavento.eco</div>
+  <h1>The social map, drawn only from what members publish about themselves</h1>
+  <p class="lede">Every node and every line below was fetched from a member's own website when this page
+  loaded. Nobody is on this map who did not put themselves on it, and no relationship is shown that the
+  organisation did not declare from its own domain.</p>
+
+  <div class="callout">
+    <b>This is the experiment proposed in issue #14, not a replacement for the existing map.</b>
+    The current Social System Map centres the convening organisation because more than half its recorded
+    edges are that organisation's own assertions about everyone else — an artifact of the data, which no
+    amount of restyling can move. This page asks the other question: <b>what shape does the network have
+    when nobody is asserting it?</b>
+  </div>
+
+  <div class="prov" id="prov"><span>Loading…</span></div>
+  <div id="wrapmap"><svg id="svg"></svg></div>
+
+  <h2>What you are looking at</h2>
+  <p class="why">Each circle is an organisation with a published Murmurations profile carrying the
+  <code>barlavento-eco</code> tag. Each line is a <code>https://schema.org/affiliation</code> relationship
+  declared in one of those profiles. <b>Thicker lines are mutual</b> — both organisations independently
+  declared the other. Circle size reflects how many relationships an organisation declares and receives.</p>
+
+  <h2>Why this matters beyond the layout</h2>
+  <table id="cmp">
+    <tr><th></th><th>Spreadsheet map</th><th>This map</th></tr>
+    <tr><td>Organisations shown</td><td>14</td><td id="n-orgs">–</td></tr>
+    <tr><td>Who decides they appear</td><td>we do</td><td><b>they do</b></td></tr>
+    <tr><td>Named individuals</td><td>one per organisation</td><td><b>none</b></td></tr>
+    <tr><td>Unconfirmed edges</td><td>at least one, flagged</td><td><b>none possible</b></td></tr>
+    <tr><td>Consent needed to publish</td><td><b>yes, and not yet obtained</b></td><td><b>none — publishing is the consent</b></td></tr>
+  </table>
+  <p class="why">That last row is the whole argument. A map built from self-published profiles cannot
+  contain someone who did not opt in, cannot carry a contact name nobody offered, and cannot assert a
+  relationship nobody claimed — <b>because nobody publishes a guess about themselves.</b> The trade is
+  honest and it is a real trade: this map is smaller.</p>
+
+  <span class="note" id="foot"></span>
+</div>
+
+<script>
+const INDEX_QUERY = "https://index.murmurations.network/v2/nodes"
+  + "?tags=barlavento-eco&tags_exact=true&status=posted&page_size=100&tags_filter=and";
+const host = u => { try { return new URL(u).host.toLowerCase().replace(/^www\./,""); } catch(e){ return ""; } };
+
+async function run(){
+  const prov = document.getElementById("prov"), foot = document.getElementById("foot");
+  prov.innerHTML = "<span>Querying the Index…</span>";
+  d3.select("#svg").selectAll("*").remove();
+  const t0 = performance.now();
+
+  let idx;
+  try {
+    const r = await fetch(INDEX_QUERY, {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    idx = await r.json();
+  } catch(e){
+    prov.innerHTML = "<span>Index unreachable</span>";
+    document.getElementById("wrapmap").innerHTML =
+      '<div class="err"><b>The map could not be drawn.</b><br>The Murmurations Index did not answer ('
+      + e.message + '). Nothing is cached here — which is the honest failure mode for a page that holds '
+      + 'no member data of its own.</div>';
+    return;
+  }
+
+  const orgNodes = (idx.data||[])
+    .filter(n => (n.tags||[]).includes("barlavento-eco"))
+    .filter(n => (n.linked_schemas||[]).some(s => s.startsWith("organizations_schema")));
+
+  const profiles = await Promise.all(orgNodes.map(async n => {
+    try { const r = await fetch(n.profile_url, {cache:"no-store"});
+          return r.ok ? await r.json() : null; } catch(e){ return null; }
+  }));
+
+  const nodes = [], byHost = new Map();
+  profiles.forEach(p => {
+    if(!p || !p.name) return;
+    const h = host(p.primary_url);
+    const node = { id: h || p.name, name: p.name, nick: p.nickname || p.name,
+                   url: p.primary_url, out: 0, deg: 0 };
+    nodes.push(node); if(h) byHost.set(h, node);
+  });
+
+  const raw = [];
+  profiles.forEach(p => {
+    if(!p || !p.name) return;
+    const from = byHost.get(host(p.primary_url));
+    (p.relationships||[]).forEach(r => {
+      const to = byHost.get(host(r.object_url));
+      if(from && to && from !== to) raw.push({source:from, target:to, predicate:r.predicate_url});
+    });
+  });
+
+  // Collapse A→B and B→A into one line, marked mutual.
+  const seen = new Map();
+  raw.forEach(e => {
+    const k = [e.source.id, e.target.id].sort().join("|");
+    if(seen.has(k)) seen.get(k).mutual = true;
+    else seen.set(k, {source:e.source, target:e.target, mutual:false});
+  });
+  const links = [...seen.values()];
+  raw.forEach(e => { e.source.out++; });
+  links.forEach(l => { l.source.deg++; l.target.deg++; });
+
+  document.getElementById("n-orgs").innerHTML = "<b>" + nodes.length + "</b>";
+
+  const svg = d3.select("#svg"), W = svg.node().clientWidth, H = svg.node().clientHeight;
+  const g = svg.append("g");
+  svg.call(d3.zoom().scaleExtent([.4,3]).on("zoom", e => g.attr("transform", e.transform)));
+
+  const link = g.append("g").selectAll("line").data(links).join("line")
+    .attr("class", d => "edge" + (d.mutual ? " mutual" : ""));
+
+  const node = g.append("g").selectAll("g").data(nodes).join("g")
+    .call(d3.drag()
+      .on("start",(e,d)=>{ if(!e.active) sim.alphaTarget(.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+      .on("end",(e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
+
+  const r = d => 16 + d.deg * 5;
+  node.append("circle").attr("r", r).attr("fill", "rgba(39,89,111,.10)")
+      .attr("stroke", "#27596F").attr("stroke-width", 1.6);
+  node.append("text").attr("class","lbl").attr("text-anchor","middle")
+      .attr("dy", d => -r(d) - 8).text(d => d.nick);
+  node.append("text").attr("class","sub").attr("text-anchor","middle")
+      .attr("dy", d => r(d) + 15).text(d => d.deg + (d.deg===1?" link":" links"));
+
+  const sim = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d=>d.id).distance(190).strength(.5))
+    .force("charge", d3.forceManyBody().strength(-900).distanceMax(520))
+    .force("center", d3.forceCenter(W/2, H/2))
+    .force("collision", d3.forceCollide().radius(d => r(d) + 34))
+    .on("tick", () => {
+      link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+          .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+      node.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+  const ms = Math.round(performance.now() - t0);
+  const mutual = links.filter(l=>l.mutual).length;
+  const top = nodes.slice().sort((a,b)=>b.deg-a.deg)[0];
+  prov.innerHTML = `<span><b>${nodes.length}</b> organisations</span>
+    <span><b>${raw.length}</b> declared relationships</span>
+    <span>→ <b>${links.length}</b> connections, <b>${mutual}</b> of them mutual</span>
+    <span>most connected: <b>${top ? top.nick : "–"}</b></span>
+    <span>${ms} ms</span>
+    <button onclick="run()">Run again</button>`;
+  foot.innerHTML = "Fetched live at " + new Date().toLocaleTimeString()
+    + ". Sources: the Murmurations Index, then each organisation's own <code>profile.json</code>. "
+    + "This page stores nothing — if a member edits their profile, this map changes; if a member "
+    + "leaves, they disappear from it.";
+}
+run();
+</script>
+</body>
+</html>

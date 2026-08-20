@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Restor map — containment prototype</title>
+<style>
+  :root{
+    --paper:#F7F4ED; --ink:#1E1A15; --stone:#E2DACB; --stone2:#D5CAB5; --paper2:#F0EADC;
+    --muted:#6B6255; --dim:#8C8375; --cork:#8A5A3B; --cistus:#B46374; --atlantic:#27596F;
+    --text:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --display:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);
+       line-height:1.55;padding:2.5rem 1.25rem 4rem}
+  .wrap{max-width:1180px;margin:0 auto}
+  .eyebrow{font-family:var(--display);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+           color:var(--cork);margin-bottom:.9rem}
+  h1{font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.28;margin:0 0 .6rem;letter-spacing:-.01em}
+  .lede{font-size:1rem;color:var(--muted);max-width:64ch;margin:0 0 1.2rem}
+  h2{font-family:var(--display);font-weight:600;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;
+     color:var(--muted);margin:2.4rem 0 .5rem;border-top:1px solid var(--stone);padding-top:1.4rem}
+  .why{font-size:.95rem;color:var(--muted);max-width:70ch;margin:0 0 1rem}
+  .verdict{font-family:var(--display);font-size:.78rem;font-weight:700;display:inline-block;
+           padding:.22rem .6rem;border-radius:999px;margin-bottom:.9rem;border:1px solid}
+  .v-good{background:rgba(58,110,71,.12);color:#356240;border-color:rgba(58,110,71,.32)}
+  .v-bad{background:rgba(180,99,116,.12);color:#8C3F51;border-color:rgba(180,99,116,.34)}
+  .v-mixed{background:rgba(180,140,60,.15);color:var(--cork);border-color:rgba(180,140,60,.34)}
+
+  .frame{border:1px solid var(--stone);border-radius:12px;overflow:hidden;background:#fff}
+  iframe{display:block;width:100%;height:100%;border:0}
+
+  /* A — naive: the current implementation. Fixed height, full width. */
+  #a .frame{height:520px}
+
+  /* B — min-width floor + horizontal scroll. The embed never sees a viewport
+     narrower than its own breakpoint, so it never drops to mobile layout. */
+  #b .scroller{overflow-x:auto;border:1px solid var(--stone);border-radius:12px;background:#fff}
+  #b .frame{border:0;border-radius:0;min-width:1000px;height:560px}
+
+  /* C — aspect-ratio box. Height follows width, so nothing is sliced;
+     but the embed still drops to mobile layout below its breakpoint. */
+  #c .frame{aspect-ratio:16/10;height:auto}
+
+  /* D — link-out below the breakpoint. No iframe at all on narrow screens. */
+  #d .frame{height:560px}
+  #d .fallback{display:none;border:1px solid var(--stone);border-radius:12px;background:#FBF9F3;
+               padding:2rem 1.5rem;text-align:center}
+  #d .fallback a{color:var(--atlantic);font-family:var(--display);font-weight:600;text-decoration:none}
+  @media (max-width:960px){
+    #d .frame{display:none}
+    #d .fallback{display:block}
+  }
+
+  .widthbar{font-family:var(--display);font-size:.78rem;color:var(--muted);background:#FBF9F3;
+            border:1px solid var(--stone);border-radius:10px;padding:.7rem 1rem;margin-bottom:1.6rem;
+            display:flex;gap:1.2rem;flex-wrap:wrap;align-items:center}
+  .widthbar b{color:var(--ink)}
+  .note{display:block;font-family:var(--display);font-size:.78rem;color:var(--dim);margin-top:2.6rem;
+        border-top:1px solid var(--stone);padding-top:1rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+       background:var(--paper2);padding:.05em .35em;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Prototype · barlavento.eco</div>
+  <h1>Restor map — four ways of containing someone else's component</h1>
+  <p class="lede">The projects map is a third-party application inside an iframe. <b>Its responsive
+  behaviour belongs to Restor, and no stylesheet of ours reaches inside it.</b> So this is not a
+  responsive-design problem to solve; it is a containment problem — choosing how our page behaves
+  around a component we do not control. Four options below, honestly labelled.</p>
+
+  <div class="widthbar">
+    <span>Your viewport: <b id="w">–</b> px</span>
+    <span>Restor appears to switch to its mobile layout below roughly <b>960 px</b>.</span>
+    <span id="verdictline"></span>
+  </div>
+
+  <section id="a">
+    <h2>A — Fixed height, full width <span class="verdict v-bad">the current problem</span></h2>
+    <p class="why">What the sandbox does today. Fine on a wide screen. Narrow the window and Restor
+    switches to its mobile layout inside a frame whose height never changes, so the content is sliced.
+    <b>Resize this window to see the failure.</b></p>
+    <div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+  </section>
+
+  <section id="b">
+    <h2>B — Minimum width, scroll horizontally <span class="verdict v-mixed">works, costs a scrollbar</span></h2>
+    <p class="why">The frame is given <code>min-width:1000px</code> inside a horizontally scrollable
+    container. The embed never sees a viewport below its breakpoint, so <b>it never switches to mobile
+    layout and nothing is ever sliced</b>. The cost is a horizontal scroll on phones, which is a real
+    usability compromise — but a predictable one, unlike a sliced map.</p>
+    <div class="scroller"><div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></div>
+  </section>
+
+  <section id="c">
+    <h2>C — Aspect ratio box <span class="verdict v-mixed">fixes slicing, not layout</span></h2>
+    <p class="why">Height follows width at 16:10, so the frame is never the wrong shape and nothing is
+    cut off. <b>But the embed still drops into its mobile layout below the breakpoint</b> — it just does
+    so in a correctly-shaped box. Solves half the problem, and the half it solves is the less annoying one.</p>
+    <div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+  </section>
+
+  <section id="d">
+    <h2>D — Embed on wide screens, link out on narrow <span class="verdict v-good">honest, and least work</span></h2>
+    <p class="why">Below 960 px the iframe is not rendered at all; a card links out to Restor's own site,
+    which is properly designed for a phone. <b>Nothing is ever broken, because nothing broken is ever
+    shown.</b> The cost is that phone visitors leave our page to see the map — which is arguably correct
+    anyway, since the map is Restor's application and not ours. <b>Narrow this window past 960 px to see it switch.</b></p>
+    <div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+    <div class="fallback">
+      <p>The projects map needs a wider screen than this one.</p>
+      <p><a href="https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" target="_blank" rel="noopener">Open the map on Restor →</a></p>
+    </div>
+  </section>
+
+  <span class="note">
+    Four containment strategies against the same embed. <b>The choice is a design decision, not a
+    technical one</b> — each trades something different, and none of them can change how Restor's
+    application behaves. Worth deciding deliberately: <b>B</b> keeps everyone on our page at the cost of
+    a scrollbar; <b>D</b> is the least work and never shows anything broken; <b>C</b> is the smallest
+    change from what exists today. Discussion belongs on the issue rather than in this file.
+  </span>
+</div>
+<script>
+  const wEl = document.getElementById("w"), vEl = document.getElementById("verdictline");
+  function upd(){
+    const w = window.innerWidth;
+    wEl.textContent = w;
+    vEl.innerHTML = w < 960
+      ? '<b style="color:#8C3F51">Below the breakpoint — A and C are showing Restor’s mobile layout; D has switched to the link.</b>'
+      : '<b style="color:#356240">Above the breakpoint — all four look correct. Narrow the window to see them diverge.</b>';
+  }
+  addEventListener("resize", upd); upd();
+</script>
+</body>
+</html>

@@ -11,3 +11,17 @@ CLAUDE.md
 resources/
 .bram.json
 .obsidian/
+
+# Bram Setup rewrites AGENTS.md's <!-- bram:start --> block on every upgrade.
+# Ignored rather than tracked, which REVERSES the decision in PR #12 ("track the
+# Bram Setup block"). #12's goal was a clean `git status`, and committing the
+# block only achieves that between upgrades — each upgrade produces a diff
+# somebody has to notice and commit, forever. Ignoring the file achieves the
+# same goal permanently and with no recurring chore.
+#
+# Nothing is lost by not tracking it: the block describes Bram's codex
+# developer_instructions path while this repo runs Claude Code, and the real
+# enforcement lives in .claude/settings.json with the working conventions in
+# .claude/bram-conventions.md — both per-machine and already untracked. The
+# committed block was therefore neither accurate nor load-bearing.
+AGENTS.md

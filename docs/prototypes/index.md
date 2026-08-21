@@ -6,9 +6,14 @@ title: Map prototypes
 
 Working pages for the **two features where the two versions of barlavento.eco actually meet**.
 
-The WordPress site is one project; the commons work in this repository is another. They touch at exactly two visual artifacts — a map of the territory and a map of the community. Both are refined here as plain HTML, CSS and JavaScript, so that whatever we settle on can be lifted into the WordPress site without translation.
+The WordPress site is one project; the commons work in this repository is another. They touch at exactly two visual artifacts — a map of the territory and a map of the community. Both are worked out here as plain HTML, CSS and JavaScript, so that whatever we settle on can be carried into the WordPress site without translation.
 
-These are workbenches, not pages of the published site.
+**These are workbenches, not pages of the published site — and nothing here deploys to the WordPress site.** There is no pipeline from this repository to it, deliberately: the transport is a person reading a file and writing the equivalent into the theme. So merging a change here never ships anything to barlavento.eco. It advances a design, or records a decision.
+
+Which of those two it does depends on the artifact, and the difference is worth keeping straight:
+
+- **The social system map** is led from here. This repository holds the working version and the WordPress site will follow it.
+- **The Restor projects map** went the other way. Bruno solved it in WordPress first; what lives here is the record of that decision and a readable copy of the pattern. **His template is canonical.** The file here is an illustration, and if the two drift apart, his is right.
 
 ## [The social system map](orgmap.html)
 

@@ -166,16 +166,23 @@
       </div>
     </div>
 
-    <p class="prov"><b>Provenance.</b> The design is Bruno Silva's, from
-    <a href="https://github.com/barlavento-eco/barlavento-eco.github.io/issues/16" style="color:var(--atlantic)">issue #16</a>;
-    his implementation is a blank WordPress page template on <code>staging.barlavento.eco</code>, which
-    sits behind HTTP auth and so cannot be embedded here. The file demonstrated above,
-    <code>restor-map-fullscreen.html</code>, is that same pattern written as plain HTML and CSS so it
-    lives in this repository, can be read and linked without a WordPress install in the way, and is
-    lifted straight back into the theme. Two details carried in deliberately: the back control is a
-    real <code>href</code> rather than <code>history.back()</code>, because a visitor arriving from a
-    shared link has no history to go back through; and the mobile bar clears the iPhone home indicator
-    via <code>env(safe-area-inset-bottom)</code>.</p>
+    <p class="prov"><b>Provenance, and which copy is the real one.</b> The design is Bruno Silva's,
+    from <a href="https://github.com/barlavento-eco/barlavento-eco.github.io/issues/16" style="color:var(--atlantic)">issue #16</a>.
+    <b>His blank WordPress page template on <code>staging.barlavento.eco</code> is the canonical
+    implementation</b> — it is the one that ships, and if the two ever disagree, his is right and this
+    one is stale.</p>
+
+    <p class="prov" style="border-top:0;padding-top:0;margin-top:.6rem">The file demonstrated above,
+    <code>restor-map-fullscreen.html</code>, is that same pattern written as plain HTML and CSS. It
+    exists to be <i>read</i> — his lives behind HTTP auth, so without this there is no version of the
+    solution anyone can open, link to or quote. <b>It is an illustration of a decision, not a source
+    to build from.</b> Most of what is prototyped here flows the other way — refined in this repository
+    first, then carried into the WordPress site — but this one was solved in WordPress and written down
+    afterwards, and pretending otherwise would just invite somebody to "sync" two files that were never
+    meant to track each other. Two details are worth copying if the template is ever rewritten: the back
+    control is a real <code>href</code> rather than <code>history.back()</code>, because a visitor
+    arriving from a shared link has no history to go back through; and the mobile bar clears the iPhone
+    home indicator via <code>env(safe-area-inset-bottom)</code>.</p>
   </div>
 
   <!-- ══════════════════ THE REJECTED SET ══════════════════ -->

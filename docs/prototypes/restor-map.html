@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Restor map — containment prototype</title>
+<title>Restor map — the containment problem, and Bruno's answer</title>
 <style>
   :root{
     --paper:#F7F4ED; --ink:#1E1A15; --stone:#E2DACB; --stone2:#D5CAB5; --paper2:#F0EADC;
     --muted:#6B6255; --dim:#8C8375; --cork:#8A5A3B; --cistus:#B46374; --atlantic:#27596F;
+    --moss:#3A6E47;
     --text:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
     --display:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   }
@@ -30,6 +31,42 @@
 
   .frame{border:1px solid var(--stone);border-radius:12px;overflow:hidden;background:#fff}
   iframe{display:block;width:100%;height:100%;border:0}
+
+  /* ─── The chosen solution ─────────────────────────────────────────────── */
+  .chosen{border:2px solid var(--moss);border-radius:16px;background:#FBFAF5;
+          padding:1.6rem 1.5rem 1.8rem;margin:1.4rem 0 0}
+  .chosen > h2{border-top:0;padding-top:0;margin-top:0;color:var(--moss);font-size:.78rem}
+  .chosen h3{font-family:var(--display);font-weight:600;font-size:1.05rem;margin:.1rem 0 .7rem;color:var(--ink)}
+  .badge{font-family:var(--display);font-size:.7rem;font-weight:700;letter-spacing:.12em;
+         text-transform:uppercase;display:inline-block;padding:.3rem .7rem;border-radius:999px;
+         background:var(--moss);color:#fff;margin-bottom:.9rem}
+  .chosen .why{max-width:74ch}
+  .points{margin:.2rem 0 1.3rem;padding-left:1.1rem;max-width:74ch}
+  .points li{font-size:.95rem;color:var(--muted);margin-bottom:.5rem}
+  .points b{color:var(--ink)}
+
+  .demos{display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start;margin-top:.4rem}
+  .demo-phone{flex:0 0 auto}
+  .demo-aside{flex:1 1 320px;min-width:0;padding-top:1.7rem}
+  .demo .cap{font-family:var(--display);font-size:.75rem;color:var(--dim);margin:0 0 .5rem;
+             letter-spacing:.04em}
+  .demo .cap b{color:var(--muted)}
+  .device{width:390px;max-width:100%;height:700px;margin:0;background:#0E1D22;
+          border:10px solid #241F1A;border-radius:30px;overflow:hidden;
+          box-shadow:0 6px 26px rgba(30,26,21,.22)}
+  .openlink{display:inline-block;margin-top:.9rem;font-family:var(--display);font-size:.85rem;
+            font-weight:600;color:var(--atlantic);text-decoration:none;
+            border-bottom:1px solid rgba(39,89,111,.4);padding-bottom:1px}
+  .openlink:hover{border-bottom-color:var(--atlantic)}
+  .prov{font-family:var(--display);font-size:.78rem;color:var(--dim);margin:1.3rem 0 0;
+        border-top:1px dashed var(--stone2);padding-top:.9rem;max-width:74ch}
+
+  /* ─── The rejected set ────────────────────────────────────────────────── */
+  .rejected-head{margin-top:3.4rem;border-top:2px solid var(--stone2);padding-top:1.5rem}
+  .rejected-head h2{border-top:0;padding-top:0;margin:0 0 .5rem;color:var(--cistus);font-size:.8rem}
+  .rejected-head p{font-size:.95rem;color:var(--muted);max-width:72ch;margin:0}
+  .rejected section{opacity:.86}
+  .rejected section:hover{opacity:1}
 
   /* A — naive: the current implementation. Fixed height, full width. */
   #a .frame{height:520px}
@@ -66,24 +103,96 @@
 <body>
 <div class="wrap">
 
-  <div class="eyebrow">Prototype · barlavento.eco</div>
-  <h1>Restor map — four ways of containing someone else's component</h1>
+  <div class="eyebrow">Prototype · barlavento.eco · issue #16 — decided</div>
+  <h1>Restor map — the containment problem, and Bruno's answer</h1>
   <p class="lede">The projects map is a third-party application inside an iframe. <b>Its responsive
-  behaviour belongs to Restor, and no stylesheet of ours reaches inside it.</b> So this is not a
+  behaviour belongs to Restor, and no stylesheet of ours reaches inside it.</b> So this was never a
   responsive-design problem to solve; it is a containment problem — choosing how our page behaves
-  around a component we do not control. Four options below, honestly labelled.</p>
+  around a component we do not control. Four options were proposed here. <b>Bruno proposed a fifth,
+  and it is the one we are building.</b></p>
 
   <div class="widthbar">
     <span>Your viewport: <b id="w">–</b> px</span>
-    <span>Restor appears to switch to its mobile layout below roughly <b>960 px</b>.</span>
     <span id="verdictline"></span>
   </div>
 
+  <!-- ══════════════════ THE CHOSEN SOLUTION ══════════════════ -->
+  <div class="chosen">
+    <div class="badge">Bruno's chosen solution</div>
+    <h3>A dedicated full-screen page — give the iframe the whole viewport</h3>
+
+    <p class="why">A page of its own, on a blank template with no site header and no footer. The iframe
+    is <code>100%</code> wide and <code>100dvh</code> tall, so <b>Restor's application always receives
+    exactly the dimensions its own responsive design was built for</b>. A "Back to barlavento.eco"
+    control returns the visitor: a floating pill on desktop, a full-width bar on a phone where a thumb
+    needs a bigger target.</p>
+
+    <p class="why">Every option below keeps our fixed-height box and negotiates with it. This one
+    removes the box. That difference is why it wins:</p>
+
+    <ul class="points">
+      <li><b>The 960 px breakpoint stops mattering.</b> Every other option is tuned to a number that
+      belongs to Restor and moves whenever they ship a release. Not depending on it is better than
+      measuring it accurately.</li>
+      <li><b>Only one scrolling context.</b> Two competing scroll areas — the page and the iframe — is
+      the worst thing you can do to someone on a phone, and neither B nor C had an answer for it.</li>
+      <li><b>Varying the height at breakpoints was already ruled out.</b> Restor's three tabs — Overview,
+      Sites, Connections — carry different amounts of content, so <i>any</i> fixed height is wrong for at
+      least two of the three: one gets sliced, another gets a field of white space. Bruno's finding, and
+      it kills that whole family of fixes on its own.</li>
+      <li><b>Tested on a real phone.</b> iPhone 13, portrait — 390 × 844, the exact target width. The
+      map works and the bottom bar obscures nothing; content scrolls past it. <code>100dvh</code> rather
+      than <code>100vh</code> is doing real work here: mobile Safari collapses and expands its URL bar
+      as you scroll, and the old unit measures against the wrong one. A desktop browser cannot show
+      you that failure.</li>
+    </ul>
+
+    <div class="demos">
+      <div class="demo demo-phone">
+        <p class="cap"><b>On a phone</b> — 390 × 844, the exact case all four options below get wrong</p>
+        <div class="device">
+          <iframe src="restor-map-fullscreen.html" title="Full-screen map — phone width"></iframe>
+        </div>
+      </div>
+      <div class="demo demo-aside">
+        <p class="why">That is the whole solution: no page around it, so nothing to slice. The back
+        control is the full-width bar along the bottom — content scrolls underneath it, so it covers
+        nothing.</p>
+        <p class="why">On a screen wider than 640 px the same file drops that bar and puts a floating
+        pill in the bottom-right corner instead. <b>You are on a wide screen, so open it and you will
+        see that version</b> — there is no point showing you a shrunken panel here and calling it a
+        desktop.</p>
+        <a class="openlink" href="restor-map-fullscreen.html" target="_blank" rel="noopener">Open it full screen, at your own viewport →</a>
+      </div>
+    </div>
+
+    <p class="prov"><b>Provenance.</b> The design is Bruno Silva's, from
+    <a href="https://github.com/barlavento-eco/barlavento-eco.github.io/issues/16" style="color:var(--atlantic)">issue #16</a>;
+    his implementation is a blank WordPress page template on <code>staging.barlavento.eco</code>, which
+    sits behind HTTP auth and so cannot be embedded here. The file demonstrated above,
+    <code>restor-map-fullscreen.html</code>, is that same pattern written as plain HTML and CSS so it
+    lives in this repository, can be read and linked without a WordPress install in the way, and is
+    lifted straight back into the theme. Two details carried in deliberately: the back control is a
+    real <code>href</code> rather than <code>history.back()</code>, because a visitor arriving from a
+    shared link has no history to go back through; and the mobile bar clears the iPhone home indicator
+    via <code>env(safe-area-inset-bottom)</code>.</p>
+  </div>
+
+  <!-- ══════════════════ THE REJECTED SET ══════════════════ -->
+  <div class="rejected-head">
+    <h2>Solutions proposed by Claude, rejected in favor of Bruno's</h2>
+    <p>Kept in place rather than deleted, because the reasoning is the useful part: each of these
+    accepts the fixed-height container as a given and then trades something away to live with it — a
+    sideways scroll, a shrunken map, or a hole in the page on mobile. Seeing what they each cost is
+    what makes it obvious that removing the container was the better move.</p>
+  </div>
+
+  <div class="rejected">
   <section id="a">
-    <h2>A — Fixed height, full width <span class="verdict v-bad">the current problem</span></h2>
-    <p class="why">What the sandbox does today. Fine on a wide screen. Narrow the window and Restor
-    switches to its mobile layout inside a frame whose height never changes, so the content is sliced.
-    <b>Resize this window to see the failure.</b></p>
+    <h2>A — Fixed height, full width <span class="verdict v-bad">the original problem</span></h2>
+    <p class="why">What the sandbox did before this issue. Fine on a wide screen. Narrow the window and
+    Restor switches to its mobile layout inside a frame whose height never changes, so the content is
+    sliced. <b>Resize this window to see the failure.</b></p>
     <div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
   </section>
 
@@ -92,7 +201,7 @@
     <p class="why">The frame is given <code>min-width:1000px</code> inside a horizontally scrollable
     container. The embed never sees a viewport below its breakpoint, so <b>it never switches to mobile
     layout and nothing is ever sliced</b>. The cost is a horizontal scroll on phones, which is a real
-    usability compromise — but a predictable one, unlike a sliced map.</p>
+    usability compromise — and it is also the option that puts two scroll areas on the same page.</p>
     <div class="scroller"><div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></div>
   </section>
 
@@ -105,24 +214,29 @@
   </section>
 
   <section id="d">
-    <h2>D — Embed on wide screens, link out on narrow <span class="verdict v-good">honest, and least work</span></h2>
+    <h2>D — Embed on wide screens, link out on narrow <span class="verdict v-mixed">honest, but leaves a hole</span></h2>
     <p class="why">Below 960 px the iframe is not rendered at all; a card links out to Restor's own site,
     which is properly designed for a phone. <b>Nothing is ever broken, because nothing broken is ever
-    shown.</b> The cost is that phone visitors leave our page to see the map — which is arguably correct
-    anyway, since the map is Restor's application and not ours. <b>Narrow this window past 960 px to see it switch.</b></p>
+    shown.</b> The cost is that phone visitors leave our page entirely — and Bruno's solution reaches the
+    same destination without giving up on our own page to get there.
+    <b>Narrow this window past 960 px to see it switch.</b></p>
     <div class="frame"><iframe src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" title="Restor collection map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
     <div class="fallback">
       <p>The projects map needs a wider screen than this one.</p>
       <p><a href="https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/" target="_blank" rel="noopener">Open the map on Restor →</a></p>
     </div>
   </section>
+  </div>
 
   <span class="note">
-    Four containment strategies against the same embed. <b>The choice is a design decision, not a
-    technical one</b> — each trades something different, and none of them can change how Restor's
-    application behaves. Worth deciding deliberately: <b>B</b> keeps everyone on our page at the cost of
-    a scrollbar; <b>D</b> is the least work and never shows anything broken; <b>C</b> is the smallest
-    change from what exists today. Discussion belongs on the issue rather than in this file.
+    <b>Decided.</b> Five containment strategies against the same embed, and the chosen one came from
+    outside the list. Also settled on the way: <b>Restor has no public API</b> — their help centre says
+    one is planned and being scoped, and there are no documented embed parameters beyond the iframe
+    snippet — so the embed is the only door, and nobody needs to look again. What remains is the
+    entry point that leads into the full-screen map, which is a design decision and Bruno's to make.
+    Discussion belongs on
+    <a href="https://github.com/barlavento-eco/barlavento-eco.github.io/issues/16" style="color:var(--atlantic)">issue #16</a>
+    rather than in this file.
   </span>
 </div>
 <script>
@@ -131,8 +245,8 @@
     const w = window.innerWidth;
     wEl.textContent = w;
     vEl.innerHTML = w < 960
-      ? '<b style="color:#8C3F51">Below the breakpoint — A and C are showing Restor’s mobile layout; D has switched to the link.</b>'
-      : '<b style="color:#356240">Above the breakpoint — all four look correct. Narrow the window to see them diverge.</b>';
+      ? '<b style="color:#8C3F51">Below Restor’s breakpoint — A and C are showing its mobile layout, D has switched to the link.</b> <span style="color:#356240">Bruno’s solution is unaffected: it has no breakpoint of its own.</span>'
+      : '<b style="color:#356240">Above Restor’s breakpoint — the four below all look correct. Narrow the window to see them diverge.</b>';
   }
   addEventListener("resize", upd); upd();
 </script>

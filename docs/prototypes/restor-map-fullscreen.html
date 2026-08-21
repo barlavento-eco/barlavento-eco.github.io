@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projects map — barlavento.eco</title>
+<!--
+  Bruno Silva's chosen solution for the Restor collection embed, reproduced as a
+  static page so it can live in this repository alongside the four alternatives.
+
+  The design is Bruno's (barlavento-eco.github.io issue #16). His own implementation
+  is a blank WordPress page template on staging.barlavento.eco; this file is the same
+  pattern in plain HTML/CSS, so it can be read, linked and lifted without a WordPress
+  install in the way.
+
+  The whole idea: give the iframe the entire viewport and stop negotiating with it.
+  Restor's application then always receives exactly the dimensions its own responsive
+  design was built for, so there is no breakpoint of ours to tune and only one
+  scrolling context on the page.
+-->
+<style>
+  :root{
+    --shell:#0E1D22;         /* matches Restor's own dark app background */
+    --bar:rgba(14,29,34,.86);
+    --hair:rgba(255,255,255,.22);
+    --display:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;background:var(--shell);overflow:hidden}
+
+  /* The iframe is the page. 100dvh rather than 100vh: mobile Safari collapses and
+     expands its URL bar on scroll, and vh measures against the wrong one. */
+  #map{
+    position:fixed; inset:0;
+    width:100%; height:100dvh;
+    border:0; display:block;
+  }
+
+  /* Back control — a floating pill on desktop. */
+  .back{
+    position:fixed; z-index:10;
+    right:1rem; bottom:1rem;
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.7rem 1.1rem;
+    font-family:var(--display); font-size:.85rem; font-weight:600; line-height:1;
+    color:#fff; text-decoration:none;
+    background:var(--bar); border:1px solid var(--hair); border-radius:999px;
+    backdrop-filter:saturate(140%) blur(8px);
+    -webkit-backdrop-filter:saturate(140%) blur(8px);
+    box-shadow:0 2px 14px rgba(0,0,0,.34);
+  }
+  .back:hover,.back:focus-visible{background:#0E1D22;border-color:rgba(255,255,255,.42)}
+  .back .arrow{font-size:1rem;line-height:1}
+
+  /* …and a full-width bar on a phone, where a thumb needs a bigger target.
+     The safe-area inset keeps it clear of the iPhone home indicator. */
+  @media (max-width:640px){
+    .back{
+      left:0; right:0; bottom:0;
+      justify-content:center;
+      border-radius:0;
+      border-left:0; border-right:0; border-bottom:0;
+      padding:.95rem 1rem calc(.95rem + env(safe-area-inset-bottom,0px));
+      box-shadow:0 -2px 16px rgba(0,0,0,.4);
+    }
+  }
+</style>
+</head>
+<body>
+
+<iframe
+  id="map"
+  src="https://restor.eco/embed/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/"
+  title="Barlavento projects — Restor collection map"
+  referrerpolicy="no-referrer-when-downgrade"
+  allowfullscreen></iframe>
+
+<!-- A real href, not history.back(): someone arriving from a shared link or a
+     bookmark has no history to go back through. -->
+<a class="back" href="https://barlavento.eco/"><span class="arrow">←</span> Back to barlavento.eco</a>
+
+</body>
+</html>

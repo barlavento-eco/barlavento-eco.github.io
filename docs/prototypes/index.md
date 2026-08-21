@@ -18,11 +18,13 @@ The Barlavento regeneration network — 14 organisations, 23 connections — as 
 
 Its data comes from a spreadsheet that members contributed to themselves, on the shared understanding that it would be published.
 
-## [The Restor projects map — containment prototype](restor-map.html)
+## [The Restor projects map — the containment problem, and Bruno's answer](restor-map.html)
 
-Four ways of containing a third-party component whose responsive behaviour we do not control. The embed belongs to Restor; no stylesheet of ours reaches inside it. So the question is not *how do we make it responsive* but *how should our page behave around something we cannot change*. Four options, each labelled with what it costs.
+Ways of containing a third-party component whose responsive behaviour we do not control. The embed belongs to Restor; no stylesheet of ours reaches inside it. So the question is not *how do we make it responsive* but *how should our page behave around something we cannot change*.
 
-**Resize the window** — that is the whole point of the page.
+**Decided.** Four options were proposed here, each labelled with what it costs. Bruno proposed a fifth — [a dedicated full-screen page](restor-map-fullscreen.html) giving the iframe the whole viewport — and it is the one being built. The four are kept below it, marked as rejected, because seeing what each of them trades away is what makes it obvious that removing the container beat negotiating with it.
+
+**Resize the window** — the four rejected options diverge as it narrows, and the chosen one does not move, because it has no breakpoint of its own.
 
 ## [The social map, from self-published profiles](orgmap-self-published.html)
 

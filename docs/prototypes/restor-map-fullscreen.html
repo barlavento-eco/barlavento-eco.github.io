@@ -8,10 +8,17 @@
   Bruno Silva's chosen solution for the Restor collection embed, reproduced as a
   static page so it can live in this repository alongside the four alternatives.
 
-  The design is Bruno's (barlavento-eco.github.io issue #16). His own implementation
-  is a blank WordPress page template on staging.barlavento.eco; this file is the same
-  pattern in plain HTML/CSS, so it can be read, linked and lifted without a WordPress
-  install in the way.
+  ⚠️ THIS FILE IS NOT THE CANONICAL IMPLEMENTATION AND IS NOT DEPLOYED ANYWHERE.
+
+  The canonical one is Bruno's blank WordPress page template on staging.barlavento.eco
+  (issue #16). That is the copy that ships. This file exists because his sits behind
+  HTTP auth, so without it there is no version of the solution anyone can open, link
+  to or quote — it is an illustration of a decision, not a source to build from.
+
+  If the two ever disagree, HIS IS RIGHT AND THIS ONE IS STALE. Do not "sync" them;
+  they were never meant to track each other. Most prototypes in this directory flow
+  the other way — refined here, then carried into the WordPress site — but this one
+  was solved in WordPress first and written down here afterwards.
 
   The whole idea: give the iframe the entire viewport and stop negotiating with it.
   Restor's application then always receives exactly the dimensions its own responsive

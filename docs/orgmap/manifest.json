@@ -1,0 +1,31 @@
+{
+  "_comment": "Deployment manifest for the barlavento.eco community map. mode=view: this is the published map, not the workbench. The renderer here is byte-identical to the one at valedalama/vdl-orgdev and to the lab's — if this file ever needs a code change to serve this community, that is the bug.",
+  "title": "barlavento.eco",
+  "mode": "view",
+  "badge": "Generated — Murmurations Index + curated sheet",
+  "banner": "<b>Two kinds of row, and one of them should shrink.</b> Organisations that publish a Murmurations profile appear here on their own account, with the relationships <i>they</i> declare. The rest are <b>curated</b> &mdash; recorded about them by somebody else, from the original spreadsheet, and not confirmed by them. Hover any line to see which it is. As members publish their own profiles, the curated rows come out.",
+  "links": [
+    {
+      "label": "How to join the map",
+      "url": "https://github.com/barlavento-eco/barlavento-eco.github.io/blob/main/docs/community.md"
+    },
+    {
+      "label": "The vocabulary",
+      "url": "https://github.com/barlavento-eco/barlavento-eco.github.io/blob/main/docs/vocabulary.md"
+    }
+  ],
+  "defaultDataset": "barlavento",
+  "datasets": {
+    "barlavento": {
+      "label": "Barlavento community",
+      "schemas": [
+        "barlavento-vocab",
+        "barlavento-current"
+      ],
+      "source": {
+        "format": "graph",
+        "path": "../data/orgmap.json"
+      }
+    }
+  }
+}

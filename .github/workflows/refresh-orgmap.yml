@@ -1,0 +1,78 @@
+name: Refresh orgmap.json
+
+# Rebuilds the community map from the Murmurations Index and commits it if
+# anything changed. The point is that a member who publishes a profile appears
+# on the map without asking anybody: the Index is polled, not a maintainer.
+#
+# The commit history of orgmap.json is therefore the record of the community
+# taking custody of its own data — one commit per actual change, which is why
+# the generator writes no timestamp into the file.
+
+on:
+  schedule:
+    - cron: "23 6 * * *"       # daily, 06:23 UTC — off the hour to dodge peak
+  workflow_dispatch:            # "Run workflow" after telling someone to publish
+  push:
+    paths:
+      - "docs/data/curated.json"
+      - "scripts/build-orgmap.py"
+
+concurrency:
+  group: refresh-orgmap
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install certifi
+
+      - name: Build orgmap.json
+        run: python3 scripts/build-orgmap.py
+
+      - name: Sanity-check the output
+        run: |
+          python3 - <<'PY'
+          import json
+          g = json.load(open("docs/data/orgmap.json"))
+          n, r, m = g["nodes"], g["relationships"], g["meta"]
+          print(f"nodes={len(n)} relationships={len(r)} {m}")
+
+          # The curated sheet is committed to this repo, so it cannot go missing
+          # for any reason except a broken build. If it has, the file is wrong
+          # regardless of what the Index said.
+          if m["curatedNodes"] + m["selfPublishedNodes"] < 14:
+              raise SystemExit(f"Refusing to commit: only {len(n)} organisations. "
+                               "The curated sheet failed to load.")
+
+          # An unreachable Index is NOT a failure — the loader says so and falls
+          # back to curated data, and a map of curated rows is still true. What
+          # must never happen is an endpoint that resolves to nothing.
+          ids = {x["id"] for x in n}
+          dangling = [x for x in r if x["subject"] not in ids or x["object"] not in ids]
+          if dangling:
+              raise SystemExit(f"Refusing to commit: {len(dangling)} relationships "
+                               f"point at organisations not on the map: {dangling[:3]}")
+          PY
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- docs/data/orgmap.json; then
+            echo "No change to the map."
+            exit 0
+          fi
+          SUMMARY=$(python3 -c "import json; m=json.load(open('docs/data/orgmap.json'))['meta']; print(m['selfPublishedNodes'], 'self-published,', m['curatedNodes'], 'curated')")
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/orgmap.json
+          git commit -m "chore: refresh orgmap.json from the Murmurations Index" -m "$SUMMARY"
+          git push

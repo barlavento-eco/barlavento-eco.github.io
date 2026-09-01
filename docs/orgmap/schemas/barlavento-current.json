@@ -1,0 +1,34 @@
+{
+  "id": "barlavento-current",
+  "dataset": "barlavento",
+  "label": "Barlavento — as recorded today",
+  "note": "The model the deployed map uses: all four recorded edge kinds are drawn as edges. This is the shape issue #14 objects to.",
+  "governs": { "label": "issue #14", "url": "https://github.com/barlavento-eco/barlavento-eco.github.io/issues/14" },
+  "nodeTypes": [
+    { "id": "Convener",   "label": "Convener",   "color": "#f5a623", "r": 30 },
+    { "id": "Network",    "label": "Network",    "color": "#a855f7", "r": 25 },
+    { "id": "Initiative", "label": "Initiative", "color": "#2dd4bf", "r": 21 },
+    { "id": "Project",    "label": "Project",    "color": "#3b82f6", "r": 20 }
+  ],
+  "attributes": [
+    { "key": "region",     "label": "Region",     "control": "enum-open", "render": "color" },
+    { "key": "membership", "label": "Membership", "control": "enum", "values": ["", "barlavento-eco"], "render": "badge" },
+    { "key": "website",    "label": "Website",    "control": "text" },
+    { "key": "themes",     "label": "Themes",     "control": "text" },
+    { "key": "purpose",    "label": "Purpose",    "control": "text" }
+  ],
+  "predicates": [
+    { "id": "https://barlavento-eco.github.io/predicates/shared-personnel/", "label": "Shared person",
+      "kind": "edge", "subjectTypes": ["*"], "objectTypes": ["*"], "directed": false,
+      "style": { "color": "#f59e0b", "width": 2.5, "dash": null } },
+    { "id": "https://schema.org/affiliation", "label": "Network / affiliation",
+      "kind": "edge", "subjectTypes": ["*"], "objectTypes": ["*"], "directed": true,
+      "style": { "color": "#a855f7", "width": 2.5, "dash": "6,3" } },
+    { "id": "https://schema.org/memberOf", "label": "Convener link",
+      "kind": "edge", "subjectTypes": ["*"], "objectTypes": ["*"], "directed": true,
+      "style": { "color": "#6a7a9c", "width": 1.3, "dash": "2,4" } },
+    { "id": "urn:barlavento:colocated", "label": "Same sub-region",
+      "kind": "edge", "subjectTypes": ["*"], "objectTypes": ["*"], "directed": false,
+      "style": { "color": "#10b981", "width": 1.8, "dash": "7,4" } }
+  ]
+}

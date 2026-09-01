@@ -14,6 +14,7 @@ forkable in full by anyone who wants to plant a confluence in their own bioregio
 - **[The River](river.md)** — the latest from every project in the community, updated hourly.
 - **[Join the River](join-the-river.md)** — how to add your project. One web address; no technical skill needed.
 - **[WordPress Implementation Spec](wordpress-spec.md)** — living spec for the dynamic layer, evolving alongside a sandbox prototype.
+- **[Relationship Vocabulary](vocabulary.md)** — how the community describes organisations and the connections between them. *Proposed; under review.*
 
 ## How to change any of this
 

@@ -1,0 +1,125 @@
+{
+  "id": "barlavento-vocab",
+  "dataset": "barlavento",
+  "label": "Barlavento — vocabulary.md (PR #19)",
+  "note": "Attributes are not edges. Membership and co-location are absorbed onto the nodes; only affiliation and shared personnel are drawn. Same data file, 23 rows in, 5 edges out.",
+  "governs": {
+    "label": "docs/vocabulary.md (PR #19)",
+    "url": "https://github.com/barlavento-eco/barlavento-eco.github.io/pull/19"
+  },
+  "nodeTypes": [
+    {
+      "id": "Convener",
+      "label": "Convener",
+      "color": "#f5a623",
+      "r": 24
+    },
+    {
+      "id": "Network",
+      "label": "Network",
+      "color": "#a855f7",
+      "r": 22
+    },
+    {
+      "id": "Initiative",
+      "label": "Initiative",
+      "color": "#2dd4bf",
+      "r": 21
+    },
+    {
+      "id": "Project",
+      "label": "Project",
+      "color": "#3b82f6",
+      "r": 20
+    }
+  ],
+  "attributes": [
+    {
+      "key": "region",
+      "label": "Region",
+      "control": "enum-open",
+      "render": "color"
+    },
+    {
+      "key": "membership",
+      "label": "Membership",
+      "control": "enum",
+      "values": [
+        "",
+        "barlavento-eco"
+      ],
+      "render": "badge"
+    },
+    {
+      "key": "website",
+      "label": "Website",
+      "control": "text"
+    },
+    {
+      "key": "themes",
+      "label": "Themes",
+      "control": "text"
+    },
+    {
+      "key": "purpose",
+      "label": "Purpose",
+      "control": "text"
+    }
+  ],
+  "predicates": [
+    {
+      "id": "https://schema.org/affiliation",
+      "label": "Affiliation",
+      "kind": "edge",
+      "subjectTypes": [
+        "*"
+      ],
+      "objectTypes": [
+        "*"
+      ],
+      "directed": true,
+      "style": {
+        "color": "#a855f7",
+        "width": 2.6,
+        "dash": null
+      }
+    },
+    {
+      "id": "https://barlavento-eco.github.io/predicates/shared-personnel/",
+      "label": "Shared personnel",
+      "kind": "edge",
+      "subjectTypes": [
+        "*"
+      ],
+      "objectTypes": [
+        "*"
+      ],
+      "directed": false,
+      "style": {
+        "color": "#f59e0b",
+        "width": 2.6,
+        "dash": null
+      }
+    },
+    {
+      "id": "https://schema.org/memberOf",
+      "label": "Membership",
+      "kind": "attribute",
+      "absorbInto": {
+        "key": "membership",
+        "value": "barlavento-eco"
+      },
+      "rationale": "Belonging is a fact about one organisation. Twelve spokes from the convener is what put it at the centre."
+    },
+    {
+      "id": "urn:barlavento:colocated",
+      "label": "Co-location",
+      "kind": "attribute",
+      "absorbInto": {
+        "key": "region",
+        "value": null
+      },
+      "rationale": "Not a relationship at all — every node already carries its own region. Three organisations in one valley should not produce a triangle."
+    }
+  ]
+}

@@ -1,0 +1,450 @@
+{
+  "nodes": [
+    {
+      "id": "vale-da-lama",
+      "name": "Quinta Vale da Lama",
+      "type": "Project",
+      "region": "Odiaxere",
+      "themes": [
+        "Agroforestry",
+        "Market garden",
+        "Agrotourism",
+        "Education"
+      ],
+      "size": "43",
+      "involved": "10-12",
+      "benefitting": "Hundreds",
+      "contact": "Walt Ludwick",
+      "website": "valedalama.net",
+      "restor": "https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/cf668730-6244-4a69-a467-a7978198bed1/",
+      "purpose": "43-ha regenerative farm improving soil, water, biodiversity and livelihoods via regen agriculture and ecosystem restoration."
+    },
+    {
+      "id": "mud-valley",
+      "name": "Mud Valley Foundation",
+      "type": "Convener",
+      "region": "Odiaxere",
+      "themes": [
+        "Education & Training",
+        "Research",
+        "Grantmaking"
+      ],
+      "size": "",
+      "involved": "5",
+      "benefitting": "Dozens",
+      "contact": "Richard Rushing",
+      "website": "mudvalley.org",
+      "restor": "",
+      "purpose": "Regenerative education, research and grantmaking nonprofit near Lagos; convenes the bioregional network."
+    },
+    {
+      "id": "vinha-velha",
+      "name": "Vinha Velha",
+      "type": "Project",
+      "region": "Barão de São João",
+      "themes": [
+        "Organic farming",
+        "Regenerative living",
+        "Agrotourism"
+      ],
+      "size": "140",
+      "involved": "10-15",
+      "benefitting": "50+",
+      "contact": "Florian Neumayer",
+      "website": "vinhavelha.com",
+      "restor": "https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/093e0ad1-1313-4e5e-9e85-6269e6238816/",
+      "purpose": "2nd-generation organic farm dedicated to regenerative living, with accommodation and activities."
+    },
+    {
+      "id": "apv",
+      "name": "African Peace Village",
+      "type": "Project",
+      "region": "Burgau",
+      "themes": [
+        "Water-cycle restoration",
+        "Ecological building",
+        "Agriculture",
+        "Youth entrepreneurship"
+      ],
+      "size": "5",
+      "involved": "3",
+      "benefitting": "6",
+      "contact": "Joshua Konkankoh",
+      "website": "africanway.world",
+      "restor": "https://restor.eco/sites/6f4ed5e2-6235-4963-9246-a4be32bac490/",
+      "purpose": "Center linking Africa and the world through watershed regeneration, ecological building and youth entrepreneurship."
+    },
+    {
+      "id": "rnf",
+      "name": "Restore Nature Foundation & Collective",
+      "type": "Network",
+      "region": "",
+      "themes": [
+        "Agroforestry",
+        "Water management",
+        "Soil",
+        "Landscape regeneration",
+        "Consultancy"
+      ],
+      "size": "40",
+      "involved": "7",
+      "benefitting": "20",
+      "contact": "Matthijs Wansink",
+      "website": "restorenaturecollective.com",
+      "restor": "",
+      "purpose": "Holistic landscape-regeneration collective offering agroforestry, water and soil services."
+    },
+    {
+      "id": "corte-medronheira",
+      "name": "Corte Medronheira",
+      "type": "Project",
+      "region": "Bensafrim",
+      "themes": [
+        "Water retention",
+        "Agroforestry",
+        "Reforestation",
+        "Rewilding"
+      ],
+      "size": "37",
+      "involved": "14",
+      "benefitting": "50",
+      "contact": "Hugo Oliveira",
+      "website": "",
+      "restor": "https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/870ae364-6105-465a-8c01-f4c269e8a7ed/",
+      "purpose": "36-ha cork-oak and strawberry-tree land; an extended family practising immersive regenerative living."
+    },
+    {
+      "id": "machada",
+      "name": "Santuário de Machada",
+      "type": "Project",
+      "region": "Bensafrim",
+      "themes": [
+        "Waterline restoration",
+        "Agroforestry",
+        "Reforestation"
+      ],
+      "size": "13",
+      "involved": "4",
+      "benefitting": "tbd",
+      "contact": "Christin Lidzba",
+      "website": "",
+      "restor": "",
+      "purpose": "13-ha wild cork-oak and medronho forest; ecological and hydrological regeneration in the Ribeira de Bensafrim catchment."
+    },
+    {
+      "id": "tres-figos",
+      "name": "Quinta dos Três Figos",
+      "type": "Project",
+      "region": "Marmelete",
+      "themes": [
+        "Organic farming",
+        "Orchard",
+        "Water (dam)",
+        "Ecosystem regeneration"
+      ],
+      "size": "20",
+      "involved": "2",
+      "benefitting": "2",
+      "contact": "Frederic Airaud",
+      "website": "",
+      "restor": "https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/aa892274-c215-4d62-91b0-b3893208ae81/",
+      "purpose": "Organic farm with a rainwater dam (2018), a 4-ha fruit orchard and 16 ha of ecosystem regeneration."
+    },
+    {
+      "id": "jasmim",
+      "name": "Quinta do Jasmim",
+      "type": "Project",
+      "region": "Bensafrim",
+      "themes": [
+        "Medicinal garden",
+        "Apothecary",
+        "Education",
+        "Biodiversity"
+      ],
+      "size": "2",
+      "involved": "2",
+      "benefitting": "Local community",
+      "contact": "Jaya Perret",
+      "website": "mamaseednaturals.com",
+      "restor": "",
+      "purpose": "Educative and productive medicine garden and apothecary with herbal workshops for children and adults."
+    },
+    {
+      "id": "zambujeira",
+      "name": "Zambujeira de Fora (RNF)",
+      "type": "Project",
+      "region": "Barão de São João",
+      "themes": [
+        "Successional agroforestry",
+        "Plant diversity"
+      ],
+      "size": "1.2",
+      "involved": "1",
+      "benefitting": "4",
+      "contact": "Manuel Castro",
+      "website": "",
+      "restor": "",
+      "purpose": "Family project: experimental successional agroforestry increasing plant diversity and density."
+    },
+    {
+      "id": "horizonte",
+      "name": "Quinta do Horizonte (RNF)",
+      "type": "Project",
+      "region": "Pedralva",
+      "themes": [
+        "Water retention",
+        "Syntropic agroforestry",
+        "Compost & biostimulants",
+        "Soil biology",
+        "Training"
+      ],
+      "size": "8.5",
+      "involved": "1",
+      "benefitting": "Dozens",
+      "contact": "Jeroen Boss",
+      "website": "revive.land",
+      "restor": "https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/2b0dd41a-34f0-4919-9519-bf4e037c0f44/",
+      "purpose": "Water-soil-plant regeneration site with a soil-microbiology lab, compost/biostimulant production, consultancy and training."
+    },
+    {
+      "id": "lagos-mais-verde",
+      "name": "Lagos Mais Verde",
+      "type": "Initiative",
+      "region": "Lagos",
+      "themes": [
+        "Urban greening",
+        "Civic engagement"
+      ],
+      "size": "",
+      "involved": "",
+      "benefitting": "Hundreds",
+      "contact": "Joana Reis",
+      "website": "lagosmaisverde.org",
+      "restor": "",
+      "purpose": "Lagos urban-greening and civic engagement initiative."
+    },
+    {
+      "id": "bravura",
+      "name": "Eco-Aldeia da Bravura",
+      "type": "Project",
+      "region": "Lagos & Monchique",
+      "themes": [
+        "Ecovillage"
+      ],
+      "size": "244",
+      "involved": "",
+      "benefitting": "",
+      "contact": "Bernardo Rosario",
+      "website": "",
+      "restor": "https://restor.eco/collections/8896b0b1-173a-42f1-9ea3-8151e3abb1b9/sites/84c757b9-6332-4311-9d8d-23b09fc03ec6/",
+      "purpose": "Ecovillage project near the Bravura reservoir (Lagos / Monchique)."
+    },
+    {
+      "id": "mata-viva",
+      "name": "Mata Viva",
+      "type": "Initiative",
+      "region": "Barão de São João",
+      "themes": [
+        "Post-fire restoration",
+        "Reforestation",
+        "Native biodiversity",
+        "Education & arts",
+        "Community mobilization"
+      ],
+      "size": "7-129",
+      "involved": "25-100",
+      "benefitting": "Thousands",
+      "contact": "Sofia Portela",
+      "website": "",
+      "restor": "",
+      "purpose": "Volunteer movement for participative post-fire restoration in the Barão de São João public forest, with ecological, educational and artistic actions."
+    }
+  ],
+  "edges": [
+    {
+      "source": "corte-medronheira",
+      "target": "jasmim",
+      "etype": "person",
+      "label": "Ana Santos",
+      "strength": 3,
+      "directed": false
+    },
+    {
+      "source": "vale-da-lama",
+      "target": "mud-valley",
+      "etype": "person",
+      "label": "Walt Ludwick",
+      "strength": 3,
+      "directed": false
+    },
+    {
+      "source": "rnf",
+      "target": "horizonte",
+      "etype": "network",
+      "label": "RNF / Jeroen Boss",
+      "strength": 3,
+      "directed": true
+    },
+    {
+      "source": "rnf",
+      "target": "zambujeira",
+      "etype": "network",
+      "label": "RNF / Manuel Castro",
+      "strength": 3,
+      "directed": true
+    },
+    {
+      "source": "rnf",
+      "target": "vinha-velha",
+      "etype": "network",
+      "label": "Based at Vinha Velha? (confirm)",
+      "strength": 1,
+      "directed": true,
+      "candidate": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "vinha-velha",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "apv",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "rnf",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "corte-medronheira",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "machada",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "tres-figos",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "jasmim",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "zambujeira",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "horizonte",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "lagos-mais-verde",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "bravura",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "mud-valley",
+      "target": "mata-viva",
+      "etype": "convener",
+      "label": "Network convener",
+      "strength": 2,
+      "directed": true
+    },
+    {
+      "source": "corte-medronheira",
+      "target": "machada",
+      "etype": "region",
+      "label": "Bensafrim",
+      "strength": 1,
+      "directed": false
+    },
+    {
+      "source": "machada",
+      "target": "jasmim",
+      "etype": "region",
+      "label": "Bensafrim",
+      "strength": 1,
+      "directed": false
+    },
+    {
+      "source": "vinha-velha",
+      "target": "zambujeira",
+      "etype": "region",
+      "label": "Barão de São João",
+      "strength": 1,
+      "directed": false
+    },
+    {
+      "source": "vinha-velha",
+      "target": "mata-viva",
+      "etype": "region",
+      "label": "Barão de São João",
+      "strength": 1,
+      "directed": false
+    },
+    {
+      "source": "zambujeira",
+      "target": "mata-viva",
+      "etype": "region",
+      "label": "Barão de São João",
+      "strength": 1,
+      "directed": false
+    },
+    {
+      "source": "lagos-mais-verde",
+      "target": "bravura",
+      "etype": "region",
+      "label": "Lagos area",
+      "strength": 1,
+      "directed": false
+    }
+  ]
+}

@@ -15,6 +15,25 @@ Which of those two it does depends on the artifact, and the difference is worth 
 - **The social system map** is led from here. This repository holds the working version and the WordPress site will follow it.
 - **The Restor projects map** went the other way. Bruno solved it in WordPress first; what lives here is the record of that decision and a readable copy of the pattern. **His template is canonical.** The file here is an illustration, and if the two drift apart, his is right.
 
+> ## The two social maps below have a successor
+>
+> **[The community map](../orgmap/)** is the published one, and it resolves the
+> tension these two pages set up between them. It is not a third design: it is
+> the same data under a classification scheme.
+>
+> The page below has the centring problem — one organisation holding 12 of 23
+> edges. The self-published page below has no centring problem and only four
+> organisations. **The successor draws both**, applies
+> [the vocabulary](../vocabulary.md) so that membership and co-location stop
+> being edges at all, and labels every line with which source it came from.
+> Eighteen of the twenty-three curated rows are membership or co-location, and
+> they leave the picture as lines and return as node properties — which is what
+> actually moves the convener out of the centre.
+>
+> It also runs the **same renderer, byte for byte, as the Vale da Lama
+> governance map**. These two pages are kept as the record of how the question
+> was arrived at; whether they stay is [issue #20](https://github.com/barlavento-eco/barlavento-eco.github.io/issues/20).
+
 ## [The social system map](orgmap.html)
 
 The Barlavento regeneration network — 14 organisations, 23 connections — as it stands today. Reproduced exactly as it runs, so that [issue #14](https://github.com/barlavento-eco/barlavento-eco.github.io/issues/14) has the actual thing to point at.

@@ -1,0 +1,294 @@
+{
+  "nodes": [
+    {
+      "id": "vale-da-lama",
+      "name": "Quinta Vale da Lama",
+      "nodeType": "Project",
+      "region": "Odiaxere",
+      "membership": "barlavento-eco",
+      "website": "https://valedalama.net",
+      "themes": "Agroforestry; Market garden; Agrotourism; Education",
+      "purpose": "Vale da Lama is a regenerative organic farm and intentional community in Odiáxere, Lagos, SW Algarve, Portugal. The farm hosts agrotourism stays, educational events, volunteer programs, and partner organisations focused on regenerative agriculture, food sovereignty, ecosystem restoration, and community resilience. It is the hub of a network including Novas Descobertas Association, Mud Valley Found",
+      "source": "self-published"
+    },
+    {
+      "id": "mud-valley",
+      "name": "Mud Valley Foundation",
+      "nodeType": "Project",
+      "region": "Odiaxere",
+      "membership": "barlavento-eco",
+      "website": "https://mudvalley.org",
+      "themes": "Education & Training; Research; Grantmaking",
+      "purpose": "Mud Valley Foundation is a nonprofit based at Quinta Vale da Lama, Odiáxere, Lagos, SW Algarve, Portugal, focused on education and action-oriented initiatives for ecosystem restoration in southwestern Portugal. It runs the Ecosystem Regeneration Mondays volunteer program, the Ecosystem Regeneration Camp, and the Barlavento Ecosystem Regeneration Community, and hosts a Bioregional Learning Center f",
+      "source": "self-published"
+    },
+    {
+      "id": "vinha-velha",
+      "name": "Vinha Velha",
+      "nodeType": "Project",
+      "region": "Barão de São João",
+      "membership": "barlavento-eco",
+      "website": "vinhavelha.com",
+      "themes": "Organic farming; Regenerative living; Agrotourism",
+      "purpose": "2nd-generation organic farm dedicated to regenerative living, with accommodation and activities.",
+      "source": "curated"
+    },
+    {
+      "id": "apv",
+      "name": "African Peace Village",
+      "nodeType": "Project",
+      "region": "Burgau",
+      "membership": "barlavento-eco",
+      "website": "africanway.world",
+      "themes": "Water-cycle restoration; Ecological building; Agriculture; Youth entrepreneurship",
+      "purpose": "Center linking Africa and the world through watershed regeneration, ecological building and youth entrepreneurship.",
+      "source": "curated"
+    },
+    {
+      "id": "rnf",
+      "name": "Restore Nature Foundation & Collective",
+      "nodeType": "Network",
+      "region": "",
+      "membership": "barlavento-eco",
+      "website": "restorenaturecollective.com",
+      "themes": "Agroforestry; Water management; Soil; Landscape regeneration; Consultancy",
+      "purpose": "Holistic landscape-regeneration collective offering agroforestry, water and soil services.",
+      "source": "curated"
+    },
+    {
+      "id": "corte-medronheira",
+      "name": "Corte Medronheira",
+      "nodeType": "Project",
+      "region": "Bensafrim",
+      "membership": "barlavento-eco",
+      "website": "",
+      "themes": "Water retention; Agroforestry; Reforestation; Rewilding",
+      "purpose": "36-ha cork-oak and strawberry-tree land; an extended family practising immersive regenerative living.",
+      "source": "curated"
+    },
+    {
+      "id": "machada",
+      "name": "Santuário de Machada",
+      "nodeType": "Project",
+      "region": "Bensafrim",
+      "membership": "barlavento-eco",
+      "website": "",
+      "themes": "Waterline restoration; Agroforestry; Reforestation",
+      "purpose": "13-ha wild cork-oak and medronho forest; ecological and hydrological regeneration in the Ribeira de Bensafrim catchment.",
+      "source": "curated"
+    },
+    {
+      "id": "tres-figos",
+      "name": "Quinta dos Três Figos",
+      "nodeType": "Project",
+      "region": "Marmelete",
+      "membership": "barlavento-eco",
+      "website": "",
+      "themes": "Organic farming; Orchard; Water (dam); Ecosystem regeneration",
+      "purpose": "Organic farm with a rainwater dam (2018), a 4-ha fruit orchard and 16 ha of ecosystem regeneration.",
+      "source": "curated"
+    },
+    {
+      "id": "jasmim",
+      "name": "Quinta do Jasmim",
+      "nodeType": "Project",
+      "region": "Bensafrim",
+      "membership": "barlavento-eco",
+      "website": "mamaseednaturals.com",
+      "themes": "Medicinal garden; Apothecary; Education; Biodiversity",
+      "purpose": "Educative and productive medicine garden and apothecary with herbal workshops for children and adults.",
+      "source": "curated"
+    },
+    {
+      "id": "zambujeira",
+      "name": "Zambujeira de Fora (RNF)",
+      "nodeType": "Project",
+      "region": "Barão de São João",
+      "membership": "barlavento-eco",
+      "website": "",
+      "themes": "Successional agroforestry; Plant diversity",
+      "purpose": "Family project: experimental successional agroforestry increasing plant diversity and density.",
+      "source": "curated"
+    },
+    {
+      "id": "horizonte",
+      "name": "Quinta do Horizonte (RNF)",
+      "nodeType": "Project",
+      "region": "Pedralva",
+      "membership": "barlavento-eco",
+      "website": "revive.land",
+      "themes": "Water retention; Syntropic agroforestry; Compost & biostimulants; Soil biology; Training",
+      "purpose": "Water-soil-plant regeneration site with a soil-microbiology lab, compost/biostimulant production, consultancy and training.",
+      "source": "curated"
+    },
+    {
+      "id": "lagos-mais-verde",
+      "name": "Lagos Mais Verde",
+      "nodeType": "Initiative",
+      "region": "Lagos",
+      "membership": "barlavento-eco",
+      "website": "lagosmaisverde.org",
+      "themes": "Urban greening; Civic engagement",
+      "purpose": "Lagos urban-greening and civic engagement initiative.",
+      "source": "curated"
+    },
+    {
+      "id": "bravura",
+      "name": "Eco-Aldeia da Bravura",
+      "nodeType": "Project",
+      "region": "Lagos & Monchique",
+      "membership": "barlavento-eco",
+      "website": "",
+      "themes": "Ecovillage",
+      "purpose": "Ecovillage project near the Bravura reservoir (Lagos / Monchique).",
+      "source": "curated"
+    },
+    {
+      "id": "mata-viva",
+      "name": "Mata Viva",
+      "nodeType": "Initiative",
+      "region": "Barão de São João",
+      "membership": "barlavento-eco",
+      "website": "",
+      "themes": "Post-fire restoration; Reforestation; Native biodiversity; Education & arts; Community mobilization",
+      "purpose": "Volunteer movement for participative post-fire restoration in the Barão de São João public forest, with ecological, educational and artistic actions.",
+      "source": "curated"
+    },
+    {
+      "id": "casavaledalama.com",
+      "name": "Casa Vale da Lama",
+      "nodeType": "Project",
+      "website": "https://casavaledalama.com",
+      "purpose": "Casa Vale da Lama is a regenerative farm-stay eco resort at Quinta Vale da Lama in Odiáxere, Lagos, SW Algarve — quality hospitality on a working organic farm, balancing comfort and sustainability with a touch of farm-house flair.",
+      "membership": "barlavento-eco",
+      "source": "self-published"
+    },
+    {
+      "id": "novasdescobertas.org",
+      "name": "Novas Descobertas Association",
+      "nodeType": "Project",
+      "website": "https://novasdescobertas.org",
+      "purpose": "Novas Descobertas Association is a Portuguese educational NGO founded in 1994, based at Campo do Vale, Quinta Vale da Lama, Odiáxere, Lagos, SW Algarve, Portugal. It delivers experiential education and self-development programs for learners of all ages, including youth day and residential camps, customised programs for schools and groups, a Permaculture Design Course (PDC), and Ecosystem Regenerat",
+      "membership": "barlavento-eco",
+      "source": "self-published"
+    }
+  ],
+  "relationships": [
+    {
+      "subject": "casavaledalama.com",
+      "predicate": "https://schema.org/affiliation",
+      "object": "mud-valley",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "casavaledalama.com",
+      "predicate": "https://schema.org/affiliation",
+      "object": "vale-da-lama",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "corte-medronheira",
+      "predicate": "https://barlavento-eco.github.io/predicates/shared-personnel/",
+      "object": "jasmim",
+      "via": "Ana Santos",
+      "confirmed": "true",
+      "source": "curated",
+      "note": ""
+    },
+    {
+      "subject": "mud-valley",
+      "predicate": "https://schema.org/affiliation",
+      "object": "casavaledalama.com",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "mud-valley",
+      "predicate": "https://schema.org/affiliation",
+      "object": "vale-da-lama",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "novasdescobertas.org",
+      "predicate": "https://schema.org/affiliation",
+      "object": "vale-da-lama",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "rnf",
+      "predicate": "https://schema.org/affiliation",
+      "object": "horizonte",
+      "via": "",
+      "confirmed": "true",
+      "source": "curated",
+      "note": "RNF / Jeroen Boss"
+    },
+    {
+      "subject": "rnf",
+      "predicate": "https://schema.org/affiliation",
+      "object": "vinha-velha",
+      "via": "",
+      "confirmed": "false",
+      "source": "curated",
+      "note": "Based at Vinha Velha? (confirm)"
+    },
+    {
+      "subject": "rnf",
+      "predicate": "https://schema.org/affiliation",
+      "object": "zambujeira",
+      "via": "",
+      "confirmed": "true",
+      "source": "curated",
+      "note": "RNF / Manuel Castro"
+    },
+    {
+      "subject": "vale-da-lama",
+      "predicate": "https://schema.org/affiliation",
+      "object": "casavaledalama.com",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "vale-da-lama",
+      "predicate": "https://barlavento-eco.github.io/predicates/shared-personnel/",
+      "object": "mud-valley",
+      "via": "Walt Ludwick",
+      "confirmed": "true",
+      "source": "curated",
+      "note": ""
+    },
+    {
+      "subject": "vale-da-lama",
+      "predicate": "https://schema.org/affiliation",
+      "object": "mud-valley",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    },
+    {
+      "subject": "vale-da-lama",
+      "predicate": "https://schema.org/affiliation",
+      "object": "novasdescobertas.org",
+      "confirmed": "true",
+      "source": "self-published",
+      "note": ""
+    }
+  ],
+  "meta": {
+    "source": "Murmurations Index + the curated spreadsheet — scripts/build-orgmap.py",
+    "selfPublishedNodes": 4,
+    "curatedNodes": 12,
+    "selfPublishedRelationships": 8,
+    "curatedRelationships": 5
+  }
+}

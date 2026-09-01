@@ -4,8 +4,8 @@
   "label": "Barlavento — vocabulary.md (PR #19)",
   "note": "Attributes are not edges. Membership and co-location are absorbed onto the nodes; only affiliation and shared personnel are drawn. Same data file, 23 rows in, 5 edges out.",
   "governs": {
-    "label": "docs/vocabulary.md (PR #19)",
-    "url": "https://github.com/barlavento-eco/barlavento-eco.github.io/pull/19"
+    "label": "docs/vocabulary.md",
+    "url": "https://github.com/barlavento-eco/barlavento-eco.github.io/blob/main/docs/vocabulary.md"
   },
   "nodeTypes": [
     {

@@ -1,0 +1,13 @@
+name: orgmap drift
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ludwa6/orgmap-lab@master
+        with:
+          files: "index.html vendor/d3.min.js schemas/barlavento-current.json schemas/barlavento-vocab.json"
+          path: "docs/orgmap"

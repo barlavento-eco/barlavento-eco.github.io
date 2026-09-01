@@ -27,5 +27,6 @@
         "path": "../data/orgmap.json"
       }
     }
-  }
+  },
+  "guideUrl": "https://ludwa6.github.io/orgmap-lab/docs/field-guide.html"
 }

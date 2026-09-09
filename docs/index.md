@@ -14,6 +14,7 @@ forkable in full by anyone who wants to plant a confluence in their own bioregio
 - **[The community map](orgmap/)** — the network as a graph. Rebuilt daily from members' own Murmurations profiles, with the unclaimed rows from the original spreadsheet still shown and marked as such.
 - **[The River](river.md)** — the latest from every project in the community, updated hourly.
 - **[Join the River](join-the-river.md)** — how to add your project. One web address; no technical skill needed.
+- **[The Nursery — Terms](nursery-terms.md)** — what a member with no website of their own gets, keeps, and takes with them when they leave. *Draft; not yet in force.*
 - **[WordPress Implementation Spec](wordpress-spec.md)** — living spec for the dynamic layer, evolving alongside a sandbox prototype.
 - **[Relationship Vocabulary](vocabulary.md)** — how the community describes organisations and the connections between them. *Proposed; under review.*
 

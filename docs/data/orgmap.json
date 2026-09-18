@@ -237,9 +237,9 @@
       "predicate": "https://schema.org/affiliation",
       "object": "vinha-velha",
       "via": "",
-      "confirmed": "false",
+      "confirmed": "true",
       "source": "curated",
-      "note": "Based at Vinha Velha? (confirm)"
+      "note": ""
     },
     {
       "subject": "rnf",

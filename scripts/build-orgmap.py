@@ -154,8 +154,10 @@ def build():
             "themes": "; ".join(n.get("themes", [])),
             "purpose": n.get("purpose", ""),
             "source": "curated",
-            # `contact` is deliberately not carried: nothing renders it, and
-            # those named individuals did not opt in. See issue #20.
+            # There is no `contact` field to carry: it was removed from
+            # curated.json in issue #27. A contact detail harvested from a
+            # spreadsheet is not a declaration of participation, which is
+            # what `source` records. Do not reintroduce one here.
         }
         nodes.append(node)
         by_id[node["id"]] = node

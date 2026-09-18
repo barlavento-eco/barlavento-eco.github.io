@@ -297,10 +297,9 @@
       "source": "rnf",
       "target": "vinha-velha",
       "etype": "network",
-      "label": "Based at Vinha Velha? (confirm)",
+      "label": "",
       "strength": 1,
-      "directed": true,
-      "candidate": true
+      "directed": true
     },
     {
       "source": "mud-valley",

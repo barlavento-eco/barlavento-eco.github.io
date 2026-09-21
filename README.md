@@ -90,9 +90,10 @@ The `barlavento.eco` domain was purchased by the **Mud Valley Foundation (MVF)**
 **Status: launched 21 September 2026.** The community website is live at
 [www.barlavento.eco](https://www.barlavento.eco) and has been announced to the
 community. What is live is **version 1**, and it is deliberately less than this
-charter describes: the project pages and the [social map](https://barlavento.eco/pt/mapa-social/)
-are published, while sovereign member profiles and the River are built but not yet
-switched on for members. The
+charter describes. On the community website, the project pages and the
+[social map](https://barlavento.eco/pt/mapa-social/) are published, while sovereign
+member profiles are not yet switched on for members. The [River](docs/river.md) runs
+here in the workshop, but does not yet feed the website. The
 pattern is proven — the [Vale da Lama Journal](https://valedalama.net) runs the same
 sovereign-syndication stack one scale down. Version 2 continues in the open, in this
 repository. Watch, star, or join in.

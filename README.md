@@ -2,15 +2,22 @@
 
 **A web commons for the Ecosystem Restoration Community of Barlavento, Algarve**
 
+### 🌍 The community website is live: **[www.barlavento.eco](https://www.barlavento.eco)**
+
+*This repository is the workshop behind that site — where it is built, decided, and documented in the open.*
+
 ---
 
-> ### 🚧 DRAFT — not yet ratified
+> ### 🚧 This charter is a draft — not yet ratified
 >
-> This charter is a working draft. Its principles were discussed and broadly agreed
-> among the founding volunteers, but nothing here has been put to a community meeting,
-> which is the body that legitimates this project. Read it as a proposal in the open,
-> not a settled constitution. Propose changes via the pencil icon above, or open a
-> discussion.
+> The **website is live**; this **charter** is not yet settled. Its principles were
+> discussed and broadly agreed among the founding volunteers, but nothing here has
+> been put to a community meeting, which is the body that legitimates this project.
+> Read it as a proposal in the open, not a settled constitution.
+>
+> Disagree with something, or want to add something? **Just say so** — write to
+> [info@barlavento.eco](mailto:info@barlavento.eco), or raise it at a community
+> meeting. No GitHub account, and no technical skill, required.
 
 ---
 
@@ -68,6 +75,8 @@ The commons' promise is that the ladder is climbable. Templates, transplanting h
 
 **If you steward land in Barlavento:** come to a community meeting — that's where this project answers to. When you're ready: publish a profile (we'll help), plant a seedling page, or claim your domain. Bring no technical skill; bring your story.
 
+**If you spotted something wrong on the website:** please tell us — especially about your own project's information. Write to [info@barlavento.eco](mailto:info@barlavento.eco). That address is read by volunteers who pass it straight to whoever can fix it, so a plain email is genuinely the most useful thing you can send. You do not need a GitHub account and you do not need to know what any of this repository is.
+
 **If you're technically inclined:** this is a young FOSS project with real, unglamorous needs — plain-language guides, Portuguese translation, feed plumbing, accessibility. Open an issue or join a discussion right here.
 
 **If you're anywhere else in the world:** everything here is designed to be copied. If your bioregion wants its own confluence, fork this repo and plant one. Tell us — we'd love a sister watershed.
@@ -78,6 +87,14 @@ The commons' promise is that the ladder is climbable. Templates, transplanting h
 
 The `barlavento.eco` domain was purchased by the **Mud Valley Foundation (MVF)** and is held in trust for the community this project serves. Day-to-day stewardship is by volunteers, currently drawn from MVF, with the explicit aim of widening that circle; decisions of substance are brought to community meetings.
 
-**Status: pre-launch.** The premise is agreed, the pattern is proven (the [Vale da Lama Journal](https://valedalama.net) runs the same sovereign-syndication stack one scale down), and the first version of this site will be a simple page and river, built in the open in this repository. Watch, star, or join in.
+**Status: launched 21 September 2026.** The community website is live at
+[www.barlavento.eco](https://www.barlavento.eco) and has been announced to the
+community. What is live is **version 1**, and it is deliberately less than this
+charter describes: the project pages and the [social map](https://barlavento.eco/pt/mapa-social/)
+are published, while sovereign member profiles and the River are built but not yet
+switched on for members. The
+pattern is proven — the [Vale da Lama Journal](https://valedalama.net) runs the same
+sovereign-syndication stack one scale down. Version 2 continues in the open, in this
+repository. Watch, star, or join in.
 
 *License: proposed MIT for code, CC BY-SA 4.0 for text and templates — to be ratified at the first community meeting that takes this up.*

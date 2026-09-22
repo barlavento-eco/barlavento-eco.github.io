@@ -1,0 +1,114 @@
+name: pr-announce
+
+# Posts on each issue a pull request says it closes, so the PR reaches Bram's
+# Coder: its inbound hook reads issue comments and cannot see PRs, and a PR's
+# "Closes #N" is a timeline cross-reference, not a comment (#36). A PR that
+# names no issue gets one plain-words nudge on the PR instead.
+#
+# pull_request_target, not pull_request: web-editor edits by anyone without
+# push access arrive as PRs from a fork, and under pull_request a fork PR gets
+# a read-only token, so the comment would fail silently for exactly the
+# people this is for.
+#
+# That is safe only because this job never checks out or runs the PR's code.
+# It reads the PR from the event payload and calls the API, nothing else.
+# Keep it that way: no actions/checkout, no build step, and no ${{ }}
+# interpolation of PR fields into the script below.
+#
+# It comments and never commits, so it does not depend on branch protection.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, edited]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  # Rapid `edited` events on one PR run in turn, so the check-then-post dedupe
+  # below cannot race itself into a double post.
+  group: pr-announce-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned to the commit, not the tag: this job holds a write token.
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const BOT = "github-actions[bot]";
+
+            // An edit to a PR that can no longer merge announces nothing.
+            if (pr.state !== "open") return core.info(`#${pr.number} is ${pr.state}; nothing to announce`);
+
+            // Linked issues, as GitHub itself resolves them: understands
+            // Closes/Fixes/Resolves and links made in the Development sidebar.
+            const q = await github.graphql(`
+              query($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $number) {
+                    closingIssuesReferences(first: 50) {
+                      nodes { number repository { nameWithOwner } }
+                    }
+                  }
+                }
+              }`, { owner, repo, number: pr.number });
+            const here = `${owner}/${repo}`.toLowerCase();
+            const issues = q.repository.pullRequest.closingIssuesReferences.nodes
+              .filter(n => n.repository.nameWithOwner.toLowerCase() === here)
+              .map(n => n.number);
+
+            // Fallback only. GitHub fills closingIssuesReferences just for PRs
+            // into the default branch, and it can lag an `edited` event; the
+            // keywords still say what the author meant. Bare "#N" or this
+            // repo's issue URL only, and each hit must be an issue, not a PR.
+            if (issues.length === 0) {
+              const url = `https://github.com/${owner}/${repo}/issues/`.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              const re = new RegExp(`\\b(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\\s*:?\\s+(?:#|${url})(\\d+)\\b`, "gi");
+              const found = new Set([...(pr.body || "").matchAll(re)].map(m => Number(m[1])));
+              for (const n of found) {
+                try {
+                  const { data } = await github.rest.issues.get({ owner, repo, issue_number: n });
+                  if (!data.pull_request) issues.push(n);
+                } catch (e) {
+                  core.info(`#${n} is not an issue here (${e.status}); skipped`);
+                }
+              }
+            }
+
+            // Only this workflow's own comments count, so a marker typed by
+            // anyone else cannot suppress an announcement.
+            async function alreadySaid(issue_number, marker) {
+              const comments = await github.paginate(github.rest.issues.listComments,
+                { owner, repo, issue_number, per_page: 100 });
+              return comments.some(c => c.user && c.user.login === BOT && (c.body || "").includes(marker));
+            }
+
+            if (issues.length === 0) {
+              const marker = "<!-- pr-announce:no-issue -->";
+              if (await alreadySaid(pr.number, marker)) return core.info(`#${pr.number}: nudge already posted`);
+              await github.rest.issues.createComment({ owner, repo, issue_number: pr.number, body:
+                `${marker}\nThis pull request doesn't name an issue, so Bram's Coder can't see it. ` +
+                "Add `Closes #N` to the description, where #N is the issue that states the problem." });
+              return core.info(`#${pr.number}: names no issue; nudge posted`);
+            }
+
+            // Escaped so a title can neither break the italics nor carry a
+            // forged marker into the comment.
+            const title = pr.title.replace(/[\\`*_[\]<>]/g, "\\$&");
+            const marker = `<!-- pr-announce:#${pr.number} -->`;
+            for (const issue_number of issues) {
+              if (await alreadySaid(issue_number, marker)) {
+                core.info(`#${issue_number}: already announced`);
+                continue;
+              }
+              await github.rest.issues.createComment({ owner, repo, issue_number, body:
+                `${marker}\nPR #${pr.number}, opened by @${pr.user.login}, proposes to close this: *${title}* — ${pr.html_url}` });
+              core.info(`#${issue_number}: announced PR #${pr.number}`);
+            }

@@ -87,6 +87,9 @@ jobs:
           fi
           SUMMARY=$(python3 -c "import json; m=json.load(open('docs/data/orgmap.json'))['meta']; print(m['selfPublishedNodes'], 'self-published,', m['curatedNodes'], 'curated')")
           BRANCH="refresh-orgmap/$(date -u '+%Y%m%d-%H%M%S')"
+          # The failure step below deletes it: the push happens before the PR
+          # exists, so a failure in between would otherwise strand the branch.
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$BRANCH"
@@ -98,7 +101,10 @@ jobs:
             --body "$(printf '%s\n\n%s\n' \
               "The Murmurations Index changed, so this rebuilds docs/data/orgmap.json: $SUMMARY." \
               "Opened and merged by the refresh workflow (#43); main is protected, so it arrives as a PR rather than a push. The map on the live site updates once this merges and Pages redeploys.")"
-          gh pr merge --auto --squash "$BRANCH"
+          # --delete-branch rather than the repo's "automatically delete head
+          # branches" setting, which did not fire for an auto-merge by the
+          # Actions app: PR #51's branch survived its own merge.
+          gh pr merge --auto --squash --delete-branch "$BRANCH"
 
       # A red run in the Actions tab is what nobody looks at: river.yml's own
       # failure went unnoticed for three weeks. Say it where issues are read.
@@ -108,6 +114,21 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
+
+            // Clean up the branch this run pushed, so a failure does not leave
+            // a dead refresh-orgmap/* behind. Best effort on purpose: it may
+            // never have been created, or the merge may already have removed
+            // it, and neither case is worth failing the notice below.
+            const branch = process.env.BRANCH;
+            if (branch) {
+              try {
+                await github.rest.git.deleteRef({ owner, repo, ref: `heads/${branch}` });
+                core.info(`deleted ${branch}`);
+              } catch (e) {
+                core.info(`${branch} not deleted (${e.status}); continuing`);
+              }
+            }
+
             const title = "Map refresh is failing";
             const run = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
             const body = `The \`Refresh orgmap.json\` workflow failed: ${run}\n\n` +

@@ -101,10 +101,19 @@ jobs:
             --body "$(printf '%s\n\n%s\n' \
               "The Murmurations Index changed, so this rebuilds docs/data/orgmap.json: $SUMMARY." \
               "Opened and merged by the refresh workflow (#43); main is protected, so it arrives as a PR rather than a push. The map on the live site updates once this merges and Pages redeploys.")"
+          # Merge now, and only fall back to --auto if something is pending.
+          # GitHub REFUSES --auto on a PR with nothing to wait for ("Pull
+          # request is in clean status"), which is the normal case here: a PR
+          # opened with GITHUB_TOKEN triggers no checks, and main requires no
+          # approving reviews. Trying --auto first is therefore a race that
+          # usually loses — it failed run 35864402915 after opening PR #54.
+          # The fallback matters the day a required check is added to main.
+          #
           # --delete-branch rather than the repo's "automatically delete head
           # branches" setting, which did not fire for an auto-merge by the
           # Actions app: PR #51's branch survived its own merge.
-          gh pr merge --auto --squash --delete-branch "$BRANCH"
+          gh pr merge --squash --delete-branch "$BRANCH" \
+            || gh pr merge --auto --squash --delete-branch "$BRANCH"
 
       # A red run in the Actions tab is what nobody looks at: river.yml's own
       # failure went unnoticed for three weeks. Say it where issues are read.

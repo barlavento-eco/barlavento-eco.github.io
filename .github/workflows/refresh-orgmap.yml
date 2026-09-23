@@ -7,12 +7,22 @@ name: Refresh orgmap.json
 # The commit history of orgmap.json is therefore the record of the community
 # taking custody of its own data — one commit per actual change, which is why
 # the generator writes no timestamp into the file.
+#
+# It reaches main by PULL REQUEST, not by pushing (#43). main is protected and
+# nothing but an admin is exempt, so a bot push would be rejected — the same
+# failure river.yml records as going unnoticed for three weeks. A change opens
+# a PR and auto-merges it, which keeps the protection, needs no secret, and
+# leaves every map change with a reviewable trail. No change opens nothing.
+#
+# A failure is announced on an issue, because a red run in the Actions tab is
+# exactly what nobody sees.
 
 on:
   schedule:
     - cron: "23 6 * * *"       # daily, 06:23 UTC — off the hour to dodge peak
   workflow_dispatch:            # "Run workflow" after telling someone to publish
   push:
+    branches: [main]            # a feature branch must not open a PR from its own data
     paths:
       - "docs/data/curated.json"
       - "scripts/build-orgmap.py"
@@ -22,7 +32,9 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: write               # push the branch the PR is opened from
+  pull-requests: write          # open it, and set it to auto-merge
+  issues: write                 # say so on an issue when a run fails
 
 jobs:
   refresh:
@@ -64,15 +76,50 @@ jobs:
                                f"point at organisations not on the map: {dangling[:3]}")
           PY
 
-      - name: Commit if changed
+      - name: Open a pull request if changed, and let it merge itself
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           if git diff --quiet -- docs/data/orgmap.json; then
             echo "No change to the map."
             exit 0
           fi
           SUMMARY=$(python3 -c "import json; m=json.load(open('docs/data/orgmap.json'))['meta']; print(m['selfPublishedNodes'], 'self-published,', m['curatedNodes'], 'curated')")
+          BRANCH="refresh-orgmap/$(date -u '+%Y%m%d-%H%M%S')"
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
           git add docs/data/orgmap.json
           git commit -m "chore: refresh orgmap.json from the Murmurations Index" -m "$SUMMARY"
-          git push
+          git push -u origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore: refresh orgmap.json from the Murmurations Index" \
+            --body "$(printf '%s\n\n%s\n' \
+              "The Murmurations Index changed, so this rebuilds docs/data/orgmap.json: $SUMMARY." \
+              "Opened and merged by the refresh workflow (#43); main is protected, so it arrives as a PR rather than a push. The map on the live site updates once this merges and Pages redeploys.")"
+          gh pr merge --auto --squash "$BRANCH"
+
+      # A red run in the Actions tab is what nobody looks at: river.yml's own
+      # failure went unnoticed for three weeks. Say it where issues are read.
+      - name: Say so on an issue when a run fails
+        if: failure()
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const title = "Map refresh is failing";
+            const run = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const body = `The \`Refresh orgmap.json\` workflow failed: ${run}\n\n` +
+              "While it keeps failing the community map on the live site stops updating, " +
+              "even though nothing looks wrong on the site itself.";
+            const open = await github.paginate(github.rest.issues.listForRepo,
+              { owner, repo, state: "open", per_page: 100 });
+            const existing = open.find(i => !i.pull_request && i.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body });
+              core.info(`commented on #${existing.number}`);
+            } else {
+              const { data } = await github.rest.issues.create({ owner, repo, title, body });
+              core.info(`opened #${data.number}`);
+            }

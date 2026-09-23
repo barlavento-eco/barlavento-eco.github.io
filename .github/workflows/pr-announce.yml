@@ -16,6 +16,12 @@ name: pr-announce
 # interpolation of PR fields into the script below.
 #
 # It comments and never commits, so it does not depend on branch protection.
+#
+# Who is mentioned for review is the repo variable PR_ANNOUNCE_NOTIFY (a
+# login, e.g. ludwa6), not a name in this file: the maintainer merges every
+# PR whoever opened it, and the author mention alone reaches only the author.
+# Keeping it in settings means widening the circle of stewards is a settings
+# change. Unset: the run warns and announces without the mention, never fails.
 
 on:
   pull_request_target:
@@ -38,11 +44,25 @@ jobs:
     steps:
       # Pinned to the commit, not the tag: this job holds a write token.
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          # Reaches the script through the environment, so the no-interpolation
+          # rule above holds for settings as well as for PR fields.
+          PR_ANNOUNCE_NOTIFY: ${{ vars.PR_ANNOUNCE_NOTIFY }}
         with:
           script: |
             const pr = context.payload.pull_request;
             const { owner, repo } = context.repo;
             const BOT = "github-actions[bot]";
+
+            // The maintainer merges every PR, so every PR has to reach them
+            // whoever opened it (#36). A leading @ in the variable is tolerated.
+            const maintainer = (process.env.PR_ANNOUNCE_NOTIFY || "").trim().replace(/^@/, "");
+            if (!maintainer) core.warning("PR_ANNOUNCE_NOTIFY is not set; announcing without a maintainer mention");
+            // Logins are case-insensitive, and one person is mentioned once:
+            // when the maintainer opened the PR, the author mention is enough.
+            const notify = maintainer && maintainer.toLowerCase() !== pr.user.login.toLowerCase()
+              ? `\n@${maintainer}: for review and merge.`
+              : "";
 
             // An edit to a PR that can no longer merge announces nothing.
             if (pr.state !== "open") return core.info(`#${pr.number} is ${pr.state}; nothing to announce`);
@@ -95,7 +115,7 @@ jobs:
               if (await alreadySaid(pr.number, marker)) return core.info(`#${pr.number}: nudge already posted`);
               await github.rest.issues.createComment({ owner, repo, issue_number: pr.number, body:
                 `${marker}\nThis pull request doesn't name an issue, so Bram's Coder can't see it. ` +
-                "Add `Closes #N` to the description, where #N is the issue that states the problem." });
+                "Add `Closes #N` to the description, where #N is the issue that states the problem." + notify });
               return core.info(`#${pr.number}: names no issue; nudge posted`);
             }
 
@@ -109,6 +129,6 @@ jobs:
                 continue;
               }
               await github.rest.issues.createComment({ owner, repo, issue_number, body:
-                `${marker}\nPR #${pr.number}, opened by @${pr.user.login}, proposes to close this: *${title}* — ${pr.html_url}` });
+                `${marker}\nPR #${pr.number}, opened by @${pr.user.login}, proposes to close this: *${title}* — ${pr.html_url}${notify}` });
               core.info(`#${issue_number}: announced PR #${pr.number}`);
             }

@@ -2,9 +2,12 @@
 
 **A web commons for the Ecosystem Restoration Community of Barlavento, Algarve**
 
-### 🌍 The community website is live: **[www.barlavento.eco](https://www.barlavento.eco)**
-
+### 🇬🇧 The community website is live: **[www.barlavento.eco](https://www.barlavento.eco/en)**
 *This repository is the workshop behind that site — where it is built, decided, and documented in the open.*
+—
+### 🇵🇹 O site da comunidade já está online: **[www.barlavento.eco](https://www.barlavento.eco)**
+*Este repositório é a oficina por trás do site — onde é construído, decidido e documentado em aberto.*
+
 
 ---
 
